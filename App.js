@@ -27,6 +27,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import Youtube from './src/youtube';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import YoutubePlayer from './src/youtubePlayer';
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -62,9 +63,10 @@ const App: () => Node = () => {
   };
 
   return (
-    <View style={{flex: 1, justifyContent: 'flex-end'}}>
+    <View style={{flex: 1}}>
       <GestureHandlerRootView>
-        <Youtube />
+        {/* <Youtube /> */}
+        <YoutubePlayer />
       </GestureHandlerRootView>
     </View>
   );
