@@ -34,6 +34,7 @@ const TITLE_WIDTH_COL = (SIZES.width * 33) / 100;
 // End of Screen
 const FINISH_TOP = (SIZES.height * 70) / 100;
 const FINISH_BOTTOM = (SIZES.height * 90) / 100;
+const screenHeight = Dimensions.get('screen').height;
 
 const YoutubePlayer = () => {
   const translateX = useSharedValue(0);
@@ -51,7 +52,7 @@ const YoutubePlayer = () => {
     },
     onEnd: (_, ctx) => {
       if (translateY.value > 150) {
-        translateY.value = withTiming(SIZES.height - SMALL_IMAGE_SIZE - 30, {
+        translateY.value = withTiming(screenHeight - SMALL_IMAGE_SIZE - 5, {
           duration: 300,
         });
       } else {
@@ -97,6 +98,15 @@ const YoutubePlayer = () => {
           extrapolateLeft: Extrapolate.CLAMP,
         },
       ),
+      paddingHorizontal: interpolate(
+        translateY.value,
+        [IMAGE_TOP_DISTANCE, (SIZES.height * 70) / 100],
+        [0, 5],
+        {
+          extrapolateRight: Extrapolate.CLAMP,
+          extrapolateLeft: Extrapolate.CLAMP,
+        },
+      ),
     };
   });
 
@@ -122,68 +132,69 @@ const YoutubePlayer = () => {
 
   return (
     <View>
-      <PanGestureHandler onGestureEvent={gestureHandler}>
-        <Animated.View style={translateStyle}>
-          <TouchableWithoutFeedback onPress={expandPlayer}>
-            <View style={styles.playerContainer}>
-              <Animated.Image
-                style={[imageStyle, {resizeMode: 'cover'}]}
-                source={{
-                  uri: 'https://i.ytimg.com/vi/duJNVv9m2NY/maxresdefault.jpg',
-                }}
-              />
+      <Animated.View style={translateStyle}>
+        <TouchableWithoutFeedback onPress={expandPlayer}>
+          <View style={styles.playerContainer}>
+            <PanGestureHandler onGestureEvent={gestureHandler}>
+              <Animated.View style={[imageStyle]}>
+                <Image
+                  style={[{width: '100%', height: '100%', resizeMode: 'cover'}]}
+                  source={{
+                    uri: 'https://i.ytimg.com/vi/duJNVv9m2NY/maxresdefault.jpg',
+                  }}
+                />
+              </Animated.View>
+            </PanGestureHandler>
 
-              <Text
-                style={[
-                  styles.sideTitle,
-                  {
-                    width: (SIZES.width * 43) / 100,
-                  },
-                ]}>
-                Realme Buds Air Neo...
-              </Text>
-              <View
-                style={[
-                  styles.iconsContainer,
-                  {width: (SIZES.width * 23) / 100},
-                ]}>
-                <Icon2 name="controller-play" size={30} color="black" />
-                <Icon name="close" size={30} color="black" />
-              </View>
+            <Text
+              style={[
+                styles.sideTitle,
+                {
+                  width: (SIZES.width * 43) / 100,
+                },
+              ]}>
+              Realme Buds Air Neo...
+            </Text>
+            <View
+              style={[
+                styles.iconsContainer,
+                {width: (SIZES.width * 23) / 100},
+              ]}>
+              <Icon2 name="controller-play" size={30} color="black" />
+              <Icon name="close" size={30} color="black" />
             </View>
-            <Animated.View style={[detailsStyle, styles.container]}>
-              <Text style={styles.title}>
-                Realme Buds Air Neo || Best Budget TWS In BD
-              </Text>
-              <View style={styles.iconsContainer}>
-                <Icon name="like2" size={30} color="black" />
-                <Icon name="dislike2" size={30} color="black" />
-                <Icon name="sharealt" size={30} color="black" />
-                <Icon name="addfile" size={30} color="black" />
-              </View>
-              <View
-                style={[styles.rowCenter, {justifyContent: 'space-between'}]}>
-                <View style={styles.rowCenter}>
-                  <Image
-                    style={{width: 50, height: 50, marginRight: 10}}
-                    source={{
-                      uri: 'https://yt3.ggpht.com/ytc/AKedOLR-TP_Uc-gh9UWENj1CsWNVyxDRwCikaVARVwhY=s48-c-k-c0x00ffffff-no-rj',
-                    }}
-                  />
-                  <View>
-                    <Text style={{fontWeight: 'bold', fontSize: 18}}>
-                      Lama Dev
-                    </Text>
-                    <Text>41.7K subscribers</Text>
-                  </View>
+          </View>
+          <Animated.View style={[detailsStyle, styles.container]}>
+            <Text style={styles.title}>
+              Realme Buds Air Neo || Best Budget TWS In BD
+            </Text>
+            <View style={styles.iconsContainer}>
+              <Icon name="like2" size={30} color="black" />
+              <Icon name="dislike2" size={30} color="black" />
+              <Icon name="sharealt" size={30} color="black" />
+              <Icon name="addfile" size={30} color="black" />
+            </View>
+            <View style={[styles.rowCenter, {justifyContent: 'space-between'}]}>
+              <View style={styles.rowCenter}>
+                <Image
+                  style={{width: 50, height: 50, marginRight: 10}}
+                  source={{
+                    uri: 'https://yt3.ggpht.com/ytc/AKedOLR-TP_Uc-gh9UWENj1CsWNVyxDRwCikaVARVwhY=s48-c-k-c0x00ffffff-no-rj',
+                  }}
+                />
+                <View>
+                  <Text style={{fontWeight: 'bold', fontSize: 18}}>
+                    Lama Dev
+                  </Text>
+                  <Text>41.7K subscribers</Text>
                 </View>
-
-                <Text style={styles.subBtn}>Subscribe</Text>
               </View>
-            </Animated.View>
-          </TouchableWithoutFeedback>
-        </Animated.View>
-      </PanGestureHandler>
+
+              <Text style={styles.subBtn}>Subscribe</Text>
+            </View>
+          </Animated.View>
+        </TouchableWithoutFeedback>
+      </Animated.View>
     </View>
   );
 };

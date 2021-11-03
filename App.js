@@ -29,6 +29,8 @@ import Youtube from './src/youtube';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import YoutubePlayer from './src/youtubePlayer';
 
+import VideoCard from './src/videoCard';
+
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
@@ -66,7 +68,19 @@ const App: () => Node = () => {
     <View style={{flex: 1}}>
       <GestureHandlerRootView>
         {/* <Youtube /> */}
+        {/* <View
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%',
+            zIndex: 99999,
+          }}> */}
         <YoutubePlayer />
+        {/* </View> */}
+        <VideoCard />
+        <VideoCard />
       </GestureHandlerRootView>
     </View>
   );
