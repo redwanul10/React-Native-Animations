@@ -6,14 +6,16 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
+import React, { useState } from 'react';
+import type { Node } from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
   useColorScheme,
   View,
 } from 'react-native';
@@ -26,63 +28,33 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Youtube from './src/youtube';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import YoutubePlayer from './src/youtubePlayer';
 
 import VideoCard from './src/videoCard';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-
 const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+  const [show, setShow] = useState(false)
   return (
-    <View style={{flex: 1}}>
-      <GestureHandlerRootView>
-        {/* <Youtube /> */}
-        {/* <View
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            width: '100%',
-            height: '100%',
-            zIndex: 99999,
-          }}> */}
-        <YoutubePlayer />
-        {/* </View> */}
-        <VideoCard />
-        <VideoCard />
-      </GestureHandlerRootView>
-    </View>
+    <>
+      <SafeAreaView style={{ flex: 1 }} >
+        <ScrollView>
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity onPress={() => setShow(1)}>
+              <VideoCard />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setShow(2)}>
+              <VideoCard />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setShow(3)}>
+              <VideoCard />
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        {show && <YoutubePlayer show={show} onClose={() => setShow(false)} />}
+      </SafeAreaView>
+      <SafeAreaView style={{ backgroundColor: "yellow" }} ></SafeAreaView>
+    </>
   );
 };
 
