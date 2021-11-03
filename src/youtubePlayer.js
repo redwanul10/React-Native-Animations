@@ -11,9 +11,10 @@ import Animated, {
 } from 'react-native-reanimated';
 import {
   PanGestureHandler,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
+import Icon2 from 'react-native-vector-icons/Entypo';
 
 const SIZES = Dimensions.get('window');
 
@@ -22,6 +23,13 @@ const IMAGE_TOP_DISTANCE = 100;
 const IMAGE_BOTTOM_DISTANCE = SIZES.width / 1.2;
 const SMALL_IMAGE_SIZE = 120;
 const BIG_IMAGE_SIZE = SIZES.height / 3.2;
+
+// IMAGE WIDTH
+const IMAGE_WIDTH_COL = (SIZES.width * 33) / 100;
+const TITLE_WIDTH_COL = (SIZES.width * 33) / 100;
+
+// const IMAGE_TOP_DISTANCE = 100;
+// const IMAGE_TOP_DISTANCE = 100;
 
 // End of Screen
 const FINISH_TOP = (SIZES.height * 70) / 100;
@@ -42,12 +50,14 @@ const YoutubePlayer = () => {
       translateY.value = event.translationY + ctx.translateY;
     },
     onEnd: (_, ctx) => {
-      // if (translateY.value > half) {
-      //   translateY.value = withSpring(half2);
-      // } else {
-      translateX.value = withTiming(0, {duration: 300});
-      translateY.value = withTiming(0, {duration: 300});
-      // }
+      if (translateY.value > 150) {
+        translateY.value = withTiming(SIZES.height - SMALL_IMAGE_SIZE - 30, {
+          duration: 300,
+        });
+      } else {
+        // translateX.value = withTiming(0, {duration: 300});
+        translateY.value = withTiming(0, {duration: 300});
+      }
     },
   });
 
@@ -57,12 +67,22 @@ const YoutubePlayer = () => {
     };
   });
 
+  // const sideTitleStyle = useAnimatedStyle(() => {
+  //   return {
+  //     width: interpolate(
+  //       translateY.value,
+  //       [IMAGE_TOP_DISTANCE, IMAGE_BOTTOM_DISTANCE],
+  //       [0, 100],
+  //     ),
+  //   };
+  // });
+
   const imageStyle = useAnimatedStyle(() => {
     return {
       width: interpolate(
         translateY.value,
         [IMAGE_TOP_DISTANCE, IMAGE_BOTTOM_DISTANCE],
-        [SIZES.width, SMALL_IMAGE_SIZE],
+        [SIZES.width, IMAGE_WIDTH_COL],
         {
           extrapolateRight: Extrapolate.CLAMP,
           extrapolateLeft: Extrapolate.CLAMP,
@@ -94,51 +114,74 @@ const YoutubePlayer = () => {
     };
   });
 
+  const expandPlayer = () => {
+    if (translateY.value > 100) {
+      translateY.value = withTiming(0, {duration: 300});
+    }
+  };
+
   return (
     <View>
       <PanGestureHandler onGestureEvent={gestureHandler}>
         <Animated.View style={translateStyle}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Animated.Image
-              style={[imageStyle, {resizeMode: 'cover'}]}
-              source={{
-                uri: 'https://i.ytimg.com/vi/duJNVv9m2NY/maxresdefault.jpg',
-              }}
-            />
+          <TouchableWithoutFeedback onPress={expandPlayer}>
+            <View style={styles.playerContainer}>
+              <Animated.Image
+                style={[imageStyle, {resizeMode: 'cover'}]}
+                source={{
+                  uri: 'https://i.ytimg.com/vi/duJNVv9m2NY/maxresdefault.jpg',
+                }}
+              />
 
-            <Text style={{paddingLeft: 20, fontSize: 18, color: 'black'}}>
-              Realme Buds Air Neo || Best Budget TWS In BD
-            </Text>
-          </View>
-          <Animated.View style={[detailsStyle, styles.container]}>
-            <Text style={styles.title}>
-              Realme Buds Air Neo || Best Budget TWS In BD
-            </Text>
-            <View style={styles.iconsContainer}>
-              <Icon name="like2" size={30} color="black" />
-              <Icon name="dislike2" size={30} color="black" />
-              <Icon name="sharealt" size={30} color="black" />
-              <Icon name="addfile" size={30} color="black" />
-            </View>
-            <View style={[styles.rowCenter, {justifyContent: 'space-between'}]}>
-              <View style={styles.rowCenter}>
-                <Image
-                  style={{width: 50, height: 50, marginRight: 10}}
-                  source={{
-                    uri: 'https://yt3.ggpht.com/ytc/AKedOLR-TP_Uc-gh9UWENj1CsWNVyxDRwCikaVARVwhY=s48-c-k-c0x00ffffff-no-rj',
-                  }}
-                />
-                <View>
-                  <Text style={{fontWeight: 'bold', fontSize: 18}}>
-                    Lama Dev
-                  </Text>
-                  <Text>41.7K subscribers</Text>
-                </View>
+              <Text
+                style={[
+                  styles.sideTitle,
+                  {
+                    width: (SIZES.width * 43) / 100,
+                  },
+                ]}>
+                Realme Buds Air Neo...
+              </Text>
+              <View
+                style={[
+                  styles.iconsContainer,
+                  {width: (SIZES.width * 23) / 100},
+                ]}>
+                <Icon2 name="controller-play" size={30} color="black" />
+                <Icon name="close" size={30} color="black" />
               </View>
-
-              <Text style={styles.subBtn}>Subscribe</Text>
             </View>
-          </Animated.View>
+            <Animated.View style={[detailsStyle, styles.container]}>
+              <Text style={styles.title}>
+                Realme Buds Air Neo || Best Budget TWS In BD
+              </Text>
+              <View style={styles.iconsContainer}>
+                <Icon name="like2" size={30} color="black" />
+                <Icon name="dislike2" size={30} color="black" />
+                <Icon name="sharealt" size={30} color="black" />
+                <Icon name="addfile" size={30} color="black" />
+              </View>
+              <View
+                style={[styles.rowCenter, {justifyContent: 'space-between'}]}>
+                <View style={styles.rowCenter}>
+                  <Image
+                    style={{width: 50, height: 50, marginRight: 10}}
+                    source={{
+                      uri: 'https://yt3.ggpht.com/ytc/AKedOLR-TP_Uc-gh9UWENj1CsWNVyxDRwCikaVARVwhY=s48-c-k-c0x00ffffff-no-rj',
+                    }}
+                  />
+                  <View>
+                    <Text style={{fontWeight: 'bold', fontSize: 18}}>
+                      Lama Dev
+                    </Text>
+                    <Text>41.7K subscribers</Text>
+                  </View>
+                </View>
+
+                <Text style={styles.subBtn}>Subscribe</Text>
+              </View>
+            </Animated.View>
+          </TouchableWithoutFeedback>
         </Animated.View>
       </PanGestureHandler>
     </View>
@@ -151,6 +194,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: 'black',
+  },
+  sideTitle: {
+    paddingLeft: 20,
+    fontSize: 18,
     color: 'black',
   },
   container: {
@@ -171,5 +219,10 @@ const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: 'red',
     padding: 10,
+  },
+  playerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
