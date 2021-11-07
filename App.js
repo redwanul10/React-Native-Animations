@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Node } from 'react';
 import {
   SafeAreaView,
@@ -19,41 +19,62 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import Youtube from './src/youtube';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import YoutubePlayer from './src/youtubePlayer';
-
 import VideoCard from './src/videoCard';
+// AIzaSyBKcNFdxwacUQZAmCPZtjql7jXwM17B25Y
+import axios from 'axios';
+const KEY = 'AIzaSyBKcNFdxwacUQZAmCPZtjql7jXwM17B25Y';
+
+const youtube = axios.create({
+  baseURL: 'https://www.googleapis.com/youtube/v3/',
+  params: {
+    part: 'snippet',
+    maxResults: 20,
+    key: KEY
+  }
+})
 
 const App: () => Node = () => {
-  const [show, setShow] = useState(false)
+  const [selectedVideo, setSelectedVideo] = useState(false)
+  const [bottomPosition, setBottomPosition] = useState(0)
+  const [videos, setVideos] = useState([])
+
+
+  const getVideos = async () => {
+    let res = await youtube.get('/search', {
+      params: {
+        q: "react js "
+      }
+    })
+    setVideos(res?.data?.items)
+    // console.log(JSON.stringify(res?.data, null, 2))
+  }
+
+  useEffect(() => {
+    getVideos()
+  }, [])
+  console.log("sdlkfjskldjflsk ", JSON.stringify(videos[0], null, 2))
   return (
     <>
-      <SafeAreaView style={{ flex: 1 }} >
+      <View style={{ flex: 1 }} >
         <ScrollView>
           <View style={{ flex: 1 }}>
-            <TouchableOpacity onPress={() => setShow(1)}>
-              <VideoCard />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setShow(2)}>
-              <VideoCard />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setShow(3)}>
-              <VideoCard />
-            </TouchableOpacity>
+            {videos?.map(item => {
+              return (
+                <TouchableOpacity key={item?.id?.videoId} onPress={() => setSelectedVideo(item)}>
+                  <VideoCard data={item} />
+                </TouchableOpacity>
+              )
+            })}
           </View>
         </ScrollView>
-        {show && <YoutubePlayer show={show} onClose={() => setShow(false)} />}
-      </SafeAreaView>
-      <SafeAreaView style={{ backgroundColor: "yellow" }} ></SafeAreaView>
+        <View style={{ height: 1, }}
+          onLayout={e => {
+            setBottomPosition(e.nativeEvent.layout.y)
+          }}
+        />
+        {selectedVideo && <YoutubePlayer bottomPosition={bottomPosition} selectedVideo={selectedVideo} onClose={() => setSelectedVideo(false)} />}
+      </View>
     </>
   );
 };

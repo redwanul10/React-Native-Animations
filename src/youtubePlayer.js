@@ -37,8 +37,10 @@ const TITLE_WIDTH_COL = (SIZES.width * 33) / 100;
 const FINISH_TOP = (SIZES.height * 70) / 100;
 const FINISH_BOTTOM = (SIZES.height * 90) / 100;
 const screenHeight = Dimensions.get('screen').height;
+let bottomTranslateY = ((screenHeight * 95) / 100) - IMAGE_WIDTH_COL - 20
 
-const YoutubePlayer = ({ onClose, show }) => {
+
+const YoutubePlayer = ({ onClose, selectedVideo, bottomPosition }) => {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(300);
 
@@ -47,31 +49,54 @@ const YoutubePlayer = ({ onClose, show }) => {
   }, [])
 
   useEffect(() => {
-    if (show) {
+    if (selectedVideo) {
       translateY.value = withTiming(0, { duration: 300 });
     }
-  }, [show])
+  }, [selectedVideo])
+
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
       ctx.translateX = translateX.value;
       ctx.translateY = translateY.value;
 
-      console.log(translateY.value)
+      if (ctx.translateY === bottomTranslateY) {
+        ctx.bottomSwipe = true
+      } else {
+        ctx.bottomSwipe = false
+      }
     },
     onActive: (event, ctx) => {
       translateX.value = event.translationX + ctx.translateX;
       translateY.value = event.translationY + ctx.translateY;
+
+
     },
     onEnd: (_, ctx) => {
+
+      if (ctx.bottomSwipe && (bottomTranslateY - 80) > translateY.value) {
+        translateY.value = withTiming(0, { duration: 300 });
+        return
+      }
+
       if (translateY.value > 100) {
-        translateY.value = withTiming(screenHeight - IMAGE_WIDTH_COL - 20, {
+        // translateY.value = withTiming(screenHeight - IMAGE_WIDTH_COL - StatusBar.currentHeight - 10, {
+        //   duration: 300,
+        // });
+        translateY.value = withTiming(bottomTranslateY, {
           duration: 300,
         });
-      } else {
-        // translateX.value = withTiming(0, {duration: 300});
-        translateY.value = withTiming(0, { duration: 300 });
+        return;
       }
+
+      // if (bottomTranslateY > translateY.value) {
+      //   translateY.value = withTiming(0, { duration: 300 });
+      // }
+
+      // else {
+      //   // translateX.value = withTiming(0, {duration: 300});
+      translateY.value = withTiming(0, { duration: 300 });
+      // }
     },
   });
 
@@ -80,6 +105,17 @@ const YoutubePlayer = ({ onClose, show }) => {
       transform: [{ translateY: translateY.value }],
     };
   });
+
+
+  // translateY: interpolate(
+  //   translateY.value,
+  //   [0, bottomPosition - (SIZES.height - bottomPosition)],
+  //   [0, bottomPosition - (SIZES.height - bottomPosition)],
+  //   {
+  //     extrapolateRight: Extrapolate.CLAMP,
+  //     extrapolateLeft: Extrapolate.CLAMP,
+  //   }
+  // ),
 
   // const sideTitleStyle = useAnimatedStyle(() => {
   //   return {
@@ -145,32 +181,33 @@ const YoutubePlayer = ({ onClose, show }) => {
 
   return (
 
-    <Animated.View style={[translateStyle, { backgroundColor: "white", width: "100%", height: "100%", position: "absolute", zIndex: 9999 }]}>
+    <Animated.View style={[translateStyle, { backgroundColor: "white", elevation: 10, width: "100%", height: "100%", position: "absolute", zIndex: 9999 }]}>
 
       <View style={styles.playerContainer}>
         <PanGestureHandler onGestureEvent={gestureHandler}>
-          <Animated.View>
+          <Animated.View  >
             <TouchableWithoutFeedback onPress={expandPlayer} style={styles.playerContainer} >
 
               <Animated.View style={[imageStyle]}>
                 <Image
                   style={[{ width: '100%', height: '100%', resizeMode: 'cover' }]}
                   source={{
-                    uri: 'https://i.ytimg.com/vi/duJNVv9m2NY/maxresdefault.jpg',
+                    uri: selectedVideo?.snippet?.thumbnails?.medium?.url || 'https://i.ytimg.com/vi/duJNVv9m2NY/maxresdefault.jpg',
                   }}
                 />
               </Animated.View>
 
 
               <Text
+                numberOfLines={2}
                 style={[
                   styles.sideTitle,
                   {
                     width: (SIZES.width * 43) / 100,
                   },
                 ]}>
-                Realme Buds Air Neo...
-            </Text>
+                {selectedVideo?.snippet?.title}
+              </Text>
             </TouchableWithoutFeedback>
           </Animated.View>
         </PanGestureHandler>
@@ -190,8 +227,8 @@ const YoutubePlayer = ({ onClose, show }) => {
       </View>
       <Animated.View style={[detailsStyle, styles.container]}>
         <Text style={styles.title}>
-          Realme Buds Air Neo || Best Budget TWS In BD
-            </Text>
+          {selectedVideo?.snippet?.title}
+        </Text>
         <View style={styles.iconsContainer}>
           <Icon name="like2" size={30} color="black" />
           <Icon name="dislike2" size={30} color="black" />
@@ -208,8 +245,8 @@ const YoutubePlayer = ({ onClose, show }) => {
             />
             <View>
               <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
-                Lama Dev
-                  </Text>
+                {selectedVideo?.snippet?.channelTitle}
+              </Text>
               <Text>41.7K subscribers</Text>
             </View>
           </View>
