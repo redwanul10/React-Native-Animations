@@ -26,6 +26,8 @@ import Video from 'react-native-video';
 // AIzaSyBKcNFdxwacUQZAmCPZtjql7jXwM17B25Y
 import axios from 'axios';
 import Slider from './src/slider';
+import ReanimatedTest from './src/test';
+import WhatsappHeader from './src/whatsappHeader';
 const KEY = 'AIzaSyBKcNFdxwacUQZAmCPZtjql7jXwM17B25Y';
 
 const youtube = axios.create({
@@ -95,7 +97,9 @@ const App: () => Node = () => {
         />
         {selectedVideo && <YoutubePlayer bottomPosition={bottomPosition} selectedVideo={selectedVideo} onClose={() => setSelectedVideo(false)} />}
       </View> */}
-      <Slider />
+      {/* <Slider /> */}
+      <WhatsappHeader />
+      {/* <ReanimatedTest /> */}
     </>
   );
 };
