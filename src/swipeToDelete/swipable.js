@@ -1,4 +1,4 @@
-import {View, Dimensions} from 'react-native';
+import {View, useWindowDimensions} from 'react-native';
 import React from 'react';
 import Animated, {
   useAnimatedGestureHandler,
@@ -10,7 +10,7 @@ import Animated, {
 import {PanGestureHandler} from 'react-native-gesture-handler';
 
 const Swipable = props => {
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = useWindowDimensions().width;
   const translateX = useSharedValue(0);
   const scaleX = useSharedValue(70);
 
@@ -22,7 +22,7 @@ const Swipable = props => {
       translateX.value = ctx.startX + event.translationX;
     },
     onEnd: _ => {
-      if (translateX.value > 150) {
+      if (translateX.value > 100) {
         translateX.value = withTiming(screenWidth, {}, () => {
           scaleX.value = withTiming(0);
         });
