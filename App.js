@@ -29,6 +29,7 @@ import Slider from './src/slider';
 import ReanimatedTest from './src/test';
 import WhatsappHeader from './src/whatsappHeader';
 import SwipeToDelete from './src/swipeToDelete';
+import BkashPayment from './src/bKashPayment';
 const KEY = 'AIzaSyBKcNFdxwacUQZAmCPZtjql7jXwM17B25Y';
 
 const youtube = axios.create({
@@ -100,7 +101,8 @@ const App: () => Node = () => {
       </View> */}
       {/* <Slider /> */}
       {/* <WhatsappHeader /> */}
-      <SwipeToDelete />
+      {/* <SwipeToDelete /> */}
+      <BkashPayment />
       {/* <ReanimatedTest /> */}
     </>
   );
