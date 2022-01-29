@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import React from 'react';
 import UserCard from './userCard';
 import TapToPay from './tapToPay';
@@ -6,6 +6,7 @@ import TapToPay from './tapToPay';
 const BkashPayment = () => {
   return (
     <>
+      <StatusBar backgroundColor="#e2136e" />
       <View style={style.container}>
         <View style={style.innerContent}>
           <View style={{flex: 1, paddingHorizontal: 20}}>

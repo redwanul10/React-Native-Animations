@@ -6,74 +6,79 @@ import {
   useWindowDimensions,
   TouchableWithoutFeedback,
 } from 'react-native';
-import React, {useCallback, useEffect} from 'react';
-import Svg, {Circle} from 'react-native-svg';
+import React from 'react';
+import Svg, {Path} from 'react-native-svg';
 import Animated, {
   runOnJS,
   useAnimatedProps,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const AnimatedPath = Animated.createAnimatedComponent(Path);
 
-const CIRCLE_LENGTH = 1000; // 2PI*R
-const R = CIRCLE_LENGTH / (2 * Math.PI);
+const CIRCLE_LENGTH = 380;
 
 const TapToPay = () => {
   const screen = useWindowDimensions();
-  const progress = useSharedValue(0.6);
+  const progress = useSharedValue(0);
 
   const animatedProps = useAnimatedProps(() => ({
     strokeDashoffset: CIRCLE_LENGTH * (1 - progress.value),
   }));
 
-  const onPressIn = useCallback(() => {
-    console.log('pressed');
-    progress.value = withTiming(1, {duration: 1500}, () =>
-      runOnJS(handleSuccess)(),
-    );
-  }, []);
+  const onPressIn = () => {
+    progress.value = withTiming(1, {duration: 1500}, data => {
+      if (data) {
+        progress.value = 0;
+        runOnJS(handleSuccess)(data);
+      }
+    });
+  };
 
-  const handleSuccess = () => {
+  const handleSuccess = data => {
     alert('payment complete');
   };
-  const onPressOut = useCallback(() => {
-    console.log('pressed');
-    progress.value = 0.6;
-  }, []);
+  const onPressOut = () => {
+    if (progress.value !== 0) progress.value = 0;
+  };
 
-  //   useEffect(() => {
-  //     progress.value = withTiming(progress.value > 0 ? 0 : 1, {duration: 2000});
-  //   }, []);
   return (
     <TouchableWithoutFeedback onPressIn={onPressIn} onPressOut={onPressOut}>
       <View style={style.paySection}>
         <>
           <Image source={require('./bKash-logo.png')} style={style.bkashLogo} />
           <Text style={style.bottomText}>Tap and hold to Mobile Recharge</Text>
-          <View
-            style={[
-              style.circle,
-              {
-                width: screen.width,
-                height: screen.width,
-                borderRadius: screen.width,
-                bottom: -screen.width * 0.65,
-              },
-            ]}
-          />
+          <TouchableWithoutFeedback
+            onPressIn={onPressIn}
+            onPressOut={onPressOut}>
+            <View
+              style={[
+                style.circle,
+                {
+                  width: screen.width,
+                  height: screen.width,
+                  borderRadius: screen.width,
+                  bottom: -screen.width * 0.65,
+                },
+              ]}
+            />
+          </TouchableWithoutFeedback>
         </>
 
-        <Svg style={{position: 'absolute', left: 0, zIndex: -1000}}>
-          <AnimatedCircle
-            //   cx={200}
-            //   cy={200}
-            cx={screen.width * 0.3}
-            cy={330}
-            r={R}
-            stroke={'#e2136e'}
-            strokeWidth={5}
-            scaleX={1.5}
+        <Svg
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            zIndex: -99999999999,
+          }}
+          cx={0}
+          cy={10}>
+          <AnimatedPath
+            d="M-1,235 C140,130 325,200 355,236"
+            fill="none"
+            stroke="#e2136e"
+            strokeWidth="5px"
             strokeDasharray={CIRCLE_LENGTH}
             animatedProps={animatedProps}
           />
@@ -87,7 +92,6 @@ export default TapToPay;
 
 const style = StyleSheet.create({
   paySection: {
-    // backgroundColor: '#e2136e',
     flex: 1,
     overflow: 'hidden',
     position: 'relative',
