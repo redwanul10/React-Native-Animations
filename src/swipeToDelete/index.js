@@ -37,63 +37,65 @@ const data = [
     title: 'Codementor',
     subTitle: 'Is becoming an engineering manager right for you?',
     avatarText: 'C',
-    avatarColor: '#1572A1',
+    avatarColor: '#96CEB4',
     description: 'Lorem Ipsum is simply dummy text of the printing and typese',
   },
   {
     title: 'foodpanda',
     subTitle: 'Tk. 70 off home made meals! ',
     avatarText: 'F',
-    avatarColor: '#219F94',
+    avatarColor: '#FFEEAD',
     description: 'Lorem Ipsum is simply dummy text of the printing and typese',
   },
   {
     title: 'Codementor',
     subTitle: 'Is becoming an engineering manager right for you?',
     avatarText: 'C',
-    avatarColor: '#C1DEAE',
+    avatarColor: '#D9534F',
     description: 'Lorem Ipsum is simply dummy text of the printing and typese',
   },
   {
     title: 'Quora Digest',
     subTitle: 'Is becoming an engineering manager right for you?',
     avatarText: 'Q',
-    avatarColor: '#313552',
+    avatarColor: '#FFAD60',
     description: 'Lorem Ipsum is simply dummy text of the printing and typese',
   },
   {
     title: 'Coursera',
     subTitle: 'Trending this week at Coursera',
     avatarText: 'C',
-    avatarColor: '#2EB086',
+    avatarColor: '#CCD1E4',
     description: 'Lorem Ipsum is simply dummy text of the printing and typese',
   },
   {
     title: 'Codementor',
     subTitle: 'Is becoming an engineering manager right for you?',
     avatarText: 'C',
-    avatarColor: '#1572A1',
+    avatarColor: '#FE7E6D',
     description: 'Lorem Ipsum is simply dummy text of the printing and typese',
   },
 ];
 const SwipeToDelete = () => {
   return (
-    <SafeAreaView style={style.container}>
-      <View style={{paddingHorizontal: 10}}>
-        <Header />
-        <FlatList
-          data={data}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => (
-            <>
-              <Swipable backgroundColor={item.avatarColor}>
-                <Card {...item} />
-              </Swipable>
-            </>
-          )}
-        />
-      </View>
-    </SafeAreaView>
+    <>
+      <SafeAreaView style={style.container}>
+        <View style={{paddingHorizontal: 10}}>
+          <Header />
+          <FlatList
+            data={data}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item}) => (
+              <>
+                <Swipable backgroundColor={item.avatarColor}>
+                  <Card {...item} />
+                </Swipable>
+              </>
+            )}
+          />
+        </View>
+      </SafeAreaView>
+    </>
   );
 };
 
