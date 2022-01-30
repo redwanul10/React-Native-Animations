@@ -6,7 +6,7 @@ import {
   useWindowDimensions,
   TouchableWithoutFeedback,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Svg, {Path} from 'react-native-svg';
 import Animated, {
   runOnJS,
@@ -16,11 +16,11 @@ import Animated, {
 } from 'react-native-reanimated';
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
-const CIRCLE_LENGTH = 380;
-
 const TapToPay = () => {
   const screen = useWindowDimensions();
   const progress = useSharedValue(0);
+  const [viewLayout, setViewLayout] = useState(0);
+  const CIRCLE_LENGTH = viewLayout.width + viewLayout.width * 0.15 || 385;
 
   const animatedProps = useAnimatedProps(() => ({
     strokeDashoffset: CIRCLE_LENGTH * (1 - progress.value),
@@ -43,14 +43,21 @@ const TapToPay = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPressIn={onPressIn} onPressOut={onPressOut}>
-      <View style={style.paySection}>
-        <>
-          <Image source={require('./bKash-logo.png')} style={style.bkashLogo} />
-          <Text style={style.bottomText}>Tap and hold to Mobile Recharge</Text>
-          <TouchableWithoutFeedback
-            onPressIn={onPressIn}
-            onPressOut={onPressOut}>
+    <>
+      <View
+        style={style.paySection}
+        onLayout={e => {
+          setViewLayout(e.nativeEvent.layout);
+        }}>
+        <TouchableWithoutFeedback onPressIn={onPressIn} onPressOut={onPressOut}>
+          <View style={style.holdSection}>
+            <Image
+              source={require('./bKash-logo.png')}
+              style={style.bkashLogo}
+            />
+            <Text style={[style.bottomText]}>
+              Tap and hold to Mobile Recharge
+            </Text>
             <View
               style={[
                 style.circle,
@@ -62,29 +69,25 @@ const TapToPay = () => {
                 },
               ]}
             />
-          </TouchableWithoutFeedback>
-        </>
+          </View>
+        </TouchableWithoutFeedback>
 
-        <Svg
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            zIndex: -99999999999,
-          }}
-          cx={0}
-          cy={10}>
-          <AnimatedPath
-            d="M-1,235 C140,130 325,200 355,236"
-            fill="none"
-            stroke="#e2136e"
-            strokeWidth="5px"
-            strokeDasharray={CIRCLE_LENGTH}
-            animatedProps={animatedProps}
-          />
-        </Svg>
+        {viewLayout.width && (
+          <Svg style={style.svg} cx={0} cy={10}>
+            <AnimatedPath
+              d={`M -10 85 Q ${viewLayout.width / 2} -25 ${
+                viewLayout.width
+              } 80`}
+              fill="none"
+              stroke="#e2136e"
+              strokeWidth="5px"
+              strokeDasharray={CIRCLE_LENGTH}
+              animatedProps={animatedProps}
+            />
+          </Svg>
+        )}
       </View>
-    </TouchableWithoutFeedback>
+    </>
   );
 };
 
@@ -117,6 +120,17 @@ const style = StyleSheet.create({
         scaleX: 1.3,
       },
     ],
-    // left: 0,
+  },
+  svg: {
+    position: 'absolute',
+    width: '100%',
+    height: 180,
+    bottom: 15,
+    zIndex: -99999999999,
+  },
+  holdSection: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
   },
 });
