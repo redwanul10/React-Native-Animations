@@ -75,7 +75,7 @@ const TapToPay = () => {
         {viewLayout.width && (
           <Svg style={style.svg} cx={0} cy={10}>
             <AnimatedPath
-              d={`M -10 85 Q ${viewLayout.width / 2} -25 ${
+              d={`M -10 86 Q ${viewLayout.width / 2.1} -20 ${
                 viewLayout.width
               } 80`}
               fill="none"
@@ -117,7 +117,7 @@ const style = StyleSheet.create({
     zIndex: -1,
     transform: [
       {
-        scaleX: 1.3,
+        scaleX: 1.35,
       },
     ],
   },
@@ -125,7 +125,7 @@ const style = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: 180,
-    bottom: 15,
+    bottom: '5%',
     zIndex: -99999999999,
   },
   holdSection: {
