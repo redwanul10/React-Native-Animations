@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -7,8 +7,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Text,
 } from 'react-native';
+
 const {width, height} = Dimensions.get('window');
 
 import Animated, {
@@ -19,6 +19,8 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import BackgroundImage from './backgrounImage';
+import SliderDot from './dots';
 
 const data = [
   'https://images.unsplash.com/photo-1570745859748-6ba2014423eb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
@@ -119,37 +121,6 @@ export default () => {
   );
 };
 
-const BackgroundImage = ({item, translationY, index}) => {
-  const stylez = useAnimatedStyle(() => {
-    return {
-      opacity: interpolate(
-        translationY.value,
-        [(index - 1) * width, index * width, (index + 1) * width],
-        [0, 1, 0],
-      ),
-    };
-  });
-
-  return (
-    <Animated.View
-      style={[stylez, {width, height}, StyleSheet.absoluteFillObject]}>
-      <Image source={{uri: item}} style={styles.image} blurRadius={20} />
-    </Animated.View>
-  );
-};
-
-const SliderDot = ({translationY, index, currentIndex, animIndex}) => {
-  const stylez = useAnimatedStyle(() => {
-    const isActive = currentIndex === index;
-    return {
-      opacity: withTiming(isActive ? 1 : 0.8),
-      transform: [{scale: withTiming(isActive ? 1.4 : 0.9)}],
-      backgroundColor: isActive ? 'white' : 'transparent',
-    };
-  });
-  return <Animated.View style={[styles.dot, stylez]} />;
-};
-
 const styles = StyleSheet.create({
   image: {width: '100%', height: '100%'},
   center: {justifyContent: 'center', alignItems: 'center'},
@@ -159,15 +130,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     bottom: height * 0.11,
-  },
-  dot: {
-    width: 10,
-    height: 10,
-
-    borderWidth: 2,
-    borderColor: 'white',
-    borderRadius: 50,
-    marginHorizontal: 5,
   },
 });
 
