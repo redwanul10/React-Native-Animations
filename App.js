@@ -11,14 +11,16 @@ import Slider from './src/slider/slider';
 import WhatsappHeader from './src/whatsAppSearch';
 import SwipeToDelete from './src/swipeToDelete';
 import BkashPayment from './src/bKashPayment';
+import AddToCart from './src/addToCart';
 
 const App = () => {
   return (
     <>
       {/* <Slider /> */}
       {/* <WhatsappHeader /> */}
-      <SwipeToDelete />
+      {/* <SwipeToDelete /> */}
       {/* <BkashPayment /> */}
+      <AddToCart />
     </>
   );
 };
