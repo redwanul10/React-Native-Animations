@@ -5,8 +5,17 @@ import {
   TouchableOpacity,
   Dimensions,
   SafeAreaView,
+  Pressable,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {
+  useEffect,
+  useMemo,
+  memo,
+  useRef,
+  useState,
+  useCallback,
+} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Animated, {
   useAnimatedStyle,
@@ -32,6 +41,9 @@ const AddToCart = () => {
   const cartCounter = useSharedValue(0);
   const bounceCart = useSharedValue(0);
   const [cart, setCart] = useState(0);
+  const [circles, setcircles] = useState([]);
+  let timerRef = useRef();
+  let animRef = useRef({counter: 0, anims: []});
 
   const cartCounterStyle = useAnimatedStyle(() => {
     return {
@@ -70,13 +82,27 @@ const AddToCart = () => {
     };
   });
 
-  console.log(layout);
-  const animateBounce = () => {
-    'worklet';
-    translateX.value = withSpring(5);
+  let counterRef = useRef(0);
+  let startedRef = useRef(false);
+
+  const increment = () => {
+    console.log('=========', counterRef.current);
+    setCart(counterRef.current);
   };
 
-  const increment = () => setCart(cart + 1);
+  const addToCartAnim = () => {
+    // 'worklet';
+    cartCounter.value = 0;
+    counterRef.current += 1;
+    cartCounter.value = withSpring(1, {duration: 600}, done => {
+      if (done) runOnJS(increment)();
+    });
+  };
+
+  const saveAnimFunc = func => {
+    animRef?.current?.anims?.push(func);
+  };
+
   return (
     <SafeAreaView style={style.container}>
       {/* <View style={style.container}> */}
@@ -108,52 +134,89 @@ const AddToCart = () => {
         </View>
         <Ripple
           onPress={() => {
-            // translateY.value = withTiming(20, {duration: 1000});
-            rotate.value = withTiming(
-              180,
-              {
-                duration: 800,
-                // easing: Easing.linear,
-                // easing: Easing.bezier(0.17, 0.67, 0.68, 0.33),
-                // cubic-bezier(.17,.67,.68,.33)**
-                // cubic-bezier(.15,.57,.31,.83)*
-                // cubic-bezier(.17,.67,.84,.33)
-              },
-              isFinished => {
-                if (isFinished) {
-                  rotate.value = 0;
-                  cartCounter.value = 0;
-
-                  if (cartCounter.value < 1 && cart === 0) {
-                    console.log('1st cond');
-                    cartCounter.value = withTiming(1, {duration: 0}, done => {
-                      if (done) {
-                        // cartCounter.value = 0;
-                        runOnJS(increment)();
-                      }
-                    });
-                  } else {
-                    console.log('2nd cond');
-                    cartCounter.value = withSpring(1, {duration: 600}, done => {
-                      if (done) {
-                        // cartCounter.value = 0;
-                        runOnJS(increment)();
-                      }
-                    });
-                  }
-                  // animateBounce();
-                }
-              },
-            );
-            // bounceCart.value = withDelay(700, withTiming(1, {duration: 400}));
-            // bounceCart.value = withTiming(1, {duration: 400});
+            startedRef.current = true;
+            const jump = animRef.current.anims[animRef.current.counter];
+            if (jump) jump();
+            if (animRef.current.counter > 5) {
+              animRef.current.counter = 0;
+            } else {
+              animRef.current.counter += 1;
+            }
           }}
           style={[style.col, style.addToCartBtn]}>
           <View>
             <Text style={{color: 'white', textAlign: 'center'}}>
               Add To Cart
             </Text>
-            <Animated.View style={[style.circle, animatedStyle]} />
+            {/* <Animated.View style={[style.circle, animatedStyle]} /> */}
+            {circles.map((item, i) => (
+              <AnimatedCircle
+                index={i}
+                key={item.id}
+                itemQuantity={i}
+                onRotateEnd={addToCartAnim}
+                onInit={func => (animRef.current = func)}
+              />
+            ))}
+            <AnimatedCircle
+              index={1}
+              key={1}
+              itemQuantity={1}
+              onRotateEnd={addToCartAnim}
+              onInit={saveAnimFunc}
+            />
+            <AnimatedCircle
+              index={2}
+              key={2}
+              itemQuantity={2}
+              onRotateEnd={addToCartAnim}
+              onInit={saveAnimFunc}
+            />
+            <AnimatedCircle
+              index={3}
+              key={3}
+              itemQuantity={3}
+              onRotateEnd={addToCartAnim}
+              onInit={saveAnimFunc}
+            />
+            <AnimatedCircle
+              index={4}
+              key={4}
+              itemQuantity={4}
+              onRotateEnd={addToCartAnim}
+              onInit={saveAnimFunc}
+            />
+            <AnimatedCircle
+              index={5}
+              key={5}
+              itemQuantity={5}
+              onRotateEnd={addToCartAnim}
+              onInit={saveAnimFunc}
+            />
+            <AnimatedCircle
+              index={6}
+              key={6}
+              itemQuantity={6}
+              onRotateEnd={addToCartAnim}
+              onInit={saveAnimFunc}
+            />
+
+            <AnimatedCircle
+              index={7}
+              key={7}
+              itemQuantity={7}
+              onRotateEnd={addToCartAnim}
+              onInit={saveAnimFunc}
+            />
+
+            <AnimatedCircle
+              index={8}
+              key={8}
+              itemQuantity={8}
+              onRotateEnd={addToCartAnim}
+              onInit={saveAnimFunc}
+            />
+
             {/* <View style={[style.circle]} /> */}
           </View>
         </Ripple>
@@ -164,6 +227,59 @@ const AddToCart = () => {
 };
 
 export default AddToCart;
+
+export const AnimatedCircleMemo = ({onRotateEnd, index, onInit}) => {
+  const rotate = useSharedValue(0);
+  const initialTranslateX = width / 3.5;
+  const translateX = useSharedValue(initialTranslateX);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    var transY = interpolate(rotate.value, [10, 60, 120, 170], [0, 35, 35, 0], {
+      extrapolateLeft: Extrapolate.CLAMP,
+      extrapolateRight: Extrapolate.CLAMP,
+    });
+    return {
+      transform: [
+        {translateY: transY},
+        {translateX: -1 * translateX.value},
+        {rotateZ: `-${rotate.value}deg`},
+        {translateX: translateX.value},
+      ],
+    };
+  });
+
+  const addToCartAnim = () => {
+    console.log('========= called car func');
+    rotate.value = withTiming(
+      180,
+      {
+        duration: 800,
+      },
+      isFinished => {
+        // if (isFinished) {
+        rotate.value = 0;
+        runOnJS(onRotateEnd)();
+        // onRotateEnd();
+        // }
+      },
+    );
+  };
+  console.log('memo rerendered ', index);
+
+  useEffect(() => {
+    // addToCartAnim();
+    onInit(addToCartAnim);
+  }, []);
+  return <Animated.View style={[style.circle, animatedStyle]} />;
+  // return <View />;
+};
+
+// const AnimatedCircle = React.memo(AnimatedCircleMemo, MEMO);
+const MEMO = (prev, next) => {
+  return next.itemQuantity !== prev.itemQuantity ? false : true;
+};
+
+var AnimatedCircle = React.memo(AnimatedCircleMemo, MEMO);
 
 const style = StyleSheet.create({
   container: {
