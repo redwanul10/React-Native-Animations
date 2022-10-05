@@ -18,9 +18,9 @@ const App = () => {
     <>
       {/* <Slider /> */}
       {/* <WhatsappHeader /> */}
-      {/* <SwipeToDelete /> */}
+      <SwipeToDelete />
       {/* <BkashPayment /> */}
-      <AddToCart />
+      {/* <AddToCart /> */}
     </>
   );
 };

@@ -50,15 +50,18 @@ const Swipable = props => {
 
   const backgroundColor = props.backgroundColor || '#EC255A';
   return (
-    <View>
-      <PanGestureHandler onGestureEvent={gestureHandler}>
+    <>
+      <PanGestureHandler
+        failOffsetY={[-5, 5]}
+        activeOffsetX={[-5, 5]}
+        onGestureEvent={gestureHandler}>
         <Animated.View style={[height, {backgroundColor}]}>
           <Animated.View style={[animatedStyle]}>
             {props.children}
           </Animated.View>
         </Animated.View>
       </PanGestureHandler>
-    </View>
+    </>
   );
 };
 
