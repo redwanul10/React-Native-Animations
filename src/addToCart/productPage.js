@@ -36,7 +36,9 @@ export default function ProductPage() {
         </View>
 
         <View style={styles.titleSection}>
-          <Text style={[styles.heading]}>TECHNICAL JACKET</Text>
+          <Text style={[styles.heading]}>
+            Levi's Men's Washed Cotton Hooded Military Jacket
+          </Text>
           <Icon style={styles.review} name="hearto" size={25} color="#D61C4E" />
         </View>
 
@@ -62,7 +64,7 @@ export default function ProductPage() {
 }
 
 const styles = StyleSheet.create({
-  mainContent: {flex: 1, padding: 25, marginTop: isAndroid ? '8%' : '10%'},
+  mainContent: {flex: 1, padding: 25, marginTop: isAndroid ? 0 : '5%'},
   imageContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
