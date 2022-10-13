@@ -12,15 +12,17 @@ import WhatsappHeader from './src/whatsAppSearch';
 import SwipeToDelete from './src/swipeToDelete';
 import BkashPayment from './src/bKashPayment';
 import AddToCart from './src/addToCart';
+import ProductPage from './src/addToCart/productPage';
 
 const App = () => {
   return (
     <>
       {/* <Slider /> */}
       {/* <WhatsappHeader /> */}
-      <SwipeToDelete />
+      {/* <SwipeToDelete /> */}
       {/* <BkashPayment /> */}
       {/* <AddToCart /> */}
+      <ProductPage />
     </>
   );
 };

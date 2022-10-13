@@ -2,47 +2,31 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   Dimensions,
   SafeAreaView,
-  Pressable,
-  TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
-import React, {
-  useEffect,
-  useMemo,
-  memo,
-  useRef,
-  useState,
-  useCallback,
-} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-  Easing,
   interpolate,
   Extrapolate,
   withSpring,
-  withDelay,
   runOnJS,
 } from 'react-native-reanimated';
 import Ripple from 'react-native-material-ripple';
+const isAndroid = Platform.OS === 'android';
 
-const {width, height} = Dimensions.get('window');
-const center = {x: width / 2, y: height / 2};
-console.log('===== width', width / 3.5);
+const {width} = Dimensions.get('window');
+
 const AddToCart = () => {
-  const [layout, setLayout] = useState({});
-  const rotate = useSharedValue(0);
-  const initialTranslateX = width / 3.5;
-  const translateX = useSharedValue(initialTranslateX);
   const cartCounter = useSharedValue(0);
   const bounceCart = useSharedValue(0);
   const [cart, setCart] = useState(0);
-  const [circles, setcircles] = useState([]);
-  let timerRef = useRef();
+
   let animRef = useRef({counter: 0, anims: []});
 
   const cartCounterStyle = useAnimatedStyle(() => {
@@ -67,26 +51,10 @@ const AddToCart = () => {
     };
   });
 
-  const animatedStyle = useAnimatedStyle(() => {
-    var transY = interpolate(rotate.value, [10, 60, 120, 170], [0, 35, 35, 0], {
-      extrapolateLeft: Extrapolate.CLAMP,
-      extrapolateRight: Extrapolate.CLAMP,
-    });
-    return {
-      transform: [
-        {translateY: transY},
-        {translateX: -1 * translateX.value},
-        {rotateZ: `-${rotate.value}deg`},
-        {translateX: translateX.value},
-      ],
-    };
-  });
-
   let counterRef = useRef(0);
   let startedRef = useRef(false);
 
   const increment = () => {
-    console.log('=========', counterRef.current);
     setCart(counterRef.current);
   };
 
@@ -103,15 +71,27 @@ const AddToCart = () => {
     animRef?.current?.anims?.push(func);
   };
 
+  const handleAddToCart = () => {
+    startedRef.current = true;
+    const jump = animRef.current.anims[animRef.current.counter];
+    if (jump) jump();
+    if (animRef.current.counter > 5) {
+      animRef.current.counter = 0;
+    } else {
+      animRef.current.counter += 1;
+    }
+  };
   return (
-    <SafeAreaView style={style.container}>
-      {/* <View style={style.container}> */}
+    <>
       <View style={style.row}>
         <View
-          onLayout={event => {
-            setLayout(event.nativeEvent.layout);
-          }}
-          style={[style.col, {flex: 1, alignItems: 'center'}]}>
+          style={[
+            style.col,
+            {
+              alignItems: 'center',
+              width: '30%',
+            },
+          ]}>
           <Animated.View style={[{position: 'relative'}, cartStyle]}>
             <Icon name="ios-cart-outline" color="black" size={30} />
             <Animated.View
@@ -132,97 +112,83 @@ const AddToCart = () => {
             </Animated.View>
           </Animated.View>
         </View>
-        <Ripple
-          onPress={() => {
-            startedRef.current = true;
-            const jump = animRef.current.anims[animRef.current.counter];
-            if (jump) jump();
-            if (animRef.current.counter > 5) {
-              animRef.current.counter = 0;
-            } else {
-              animRef.current.counter += 1;
-            }
-          }}
-          style={[style.col, style.addToCartBtn]}>
-          <View>
-            <Text style={{color: 'white', textAlign: 'center'}}>
-              Add To Cart
-            </Text>
-            {/* <Animated.View style={[style.circle, animatedStyle]} /> */}
-            {circles.map((item, i) => (
+        <View style={{width: '50%'}}>
+          <Ripple
+            onPress={handleAddToCart}
+            style={[style.col, style.addToCartBtn]}>
+            <View>
+              <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                }}>
+                Add To Cart
+              </Text>
+
               <AnimatedCircle
-                index={i}
-                key={item.id}
-                itemQuantity={i}
+                index={1}
+                key={1}
+                itemQuantity={1}
                 onRotateEnd={addToCartAnim}
-                onInit={func => (animRef.current = func)}
+                onInit={saveAnimFunc}
               />
-            ))}
-            <AnimatedCircle
-              index={1}
-              key={1}
-              itemQuantity={1}
-              onRotateEnd={addToCartAnim}
-              onInit={saveAnimFunc}
-            />
-            <AnimatedCircle
-              index={2}
-              key={2}
-              itemQuantity={2}
-              onRotateEnd={addToCartAnim}
-              onInit={saveAnimFunc}
-            />
-            <AnimatedCircle
-              index={3}
-              key={3}
-              itemQuantity={3}
-              onRotateEnd={addToCartAnim}
-              onInit={saveAnimFunc}
-            />
-            <AnimatedCircle
-              index={4}
-              key={4}
-              itemQuantity={4}
-              onRotateEnd={addToCartAnim}
-              onInit={saveAnimFunc}
-            />
-            <AnimatedCircle
-              index={5}
-              key={5}
-              itemQuantity={5}
-              onRotateEnd={addToCartAnim}
-              onInit={saveAnimFunc}
-            />
-            <AnimatedCircle
-              index={6}
-              key={6}
-              itemQuantity={6}
-              onRotateEnd={addToCartAnim}
-              onInit={saveAnimFunc}
-            />
+              <AnimatedCircle
+                index={2}
+                key={2}
+                itemQuantity={2}
+                onRotateEnd={addToCartAnim}
+                onInit={saveAnimFunc}
+              />
+              <AnimatedCircle
+                index={3}
+                key={3}
+                itemQuantity={3}
+                onRotateEnd={addToCartAnim}
+                onInit={saveAnimFunc}
+              />
+              <AnimatedCircle
+                index={4}
+                key={4}
+                itemQuantity={4}
+                onRotateEnd={addToCartAnim}
+                onInit={saveAnimFunc}
+              />
+              <AnimatedCircle
+                index={5}
+                key={5}
+                itemQuantity={5}
+                onRotateEnd={addToCartAnim}
+                onInit={saveAnimFunc}
+              />
+              <AnimatedCircle
+                index={6}
+                key={6}
+                itemQuantity={6}
+                onRotateEnd={addToCartAnim}
+                onInit={saveAnimFunc}
+              />
 
-            <AnimatedCircle
-              index={7}
-              key={7}
-              itemQuantity={7}
-              onRotateEnd={addToCartAnim}
-              onInit={saveAnimFunc}
-            />
+              <AnimatedCircle
+                index={7}
+                key={7}
+                itemQuantity={7}
+                onRotateEnd={addToCartAnim}
+                onInit={saveAnimFunc}
+              />
 
-            <AnimatedCircle
-              index={8}
-              key={8}
-              itemQuantity={8}
-              onRotateEnd={addToCartAnim}
-              onInit={saveAnimFunc}
-            />
-
-            {/* <View style={[style.circle]} /> */}
-          </View>
-        </Ripple>
+              <AnimatedCircle
+                index={8}
+                key={8}
+                itemQuantity={8}
+                onRotateEnd={addToCartAnim}
+                onInit={saveAnimFunc}
+              />
+            </View>
+          </Ripple>
+        </View>
       </View>
-      {/* </View> */}
-    </SafeAreaView>
+    </>
   );
 };
 
@@ -249,7 +215,6 @@ export const AnimatedCircleMemo = ({onRotateEnd, index, onInit}) => {
   });
 
   const addToCartAnim = () => {
-    console.log('========= called car func');
     rotate.value = withTiming(
       180,
       {
@@ -264,17 +229,14 @@ export const AnimatedCircleMemo = ({onRotateEnd, index, onInit}) => {
       },
     );
   };
-  console.log('memo rerendered ', index);
 
   useEffect(() => {
-    // addToCartAnim();
     onInit(addToCartAnim);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <Animated.View style={[style.circle, animatedStyle]} />;
-  // return <View />;
 };
 
-// const AnimatedCircle = React.memo(AnimatedCircleMemo, MEMO);
 const MEMO = (prev, next) => {
   return next.itemQuantity !== prev.itemQuantity ? false : true;
 };
@@ -288,30 +250,28 @@ const style = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    marginBottom: 10,
+    justifyContent: 'space-between',
+    marginBottom: isAndroid ? 10 : '18%',
+    paddingHorizontal: 15,
+    alignItems: 'center',
   },
   col: {
-    // backgroundColor: 'red',
     paddingVertical: 5,
     marginHorizontal: 5,
   },
   addToCartBtn: {
-    backgroundColor: '#ff007f',
-    flex: 1.5,
+    backgroundColor: '#251B37',
+    borderRadius: 10,
+    paddingVertical: 10,
   },
   circle: {
     width: 20,
     height: 20,
-    backgroundColor: '#ff007f',
+    backgroundColor: '#251B37',
     borderRadius: 50,
     position: 'absolute',
     right: '30%',
     bottom: '25%',
     zIndex: -1,
-    // transform: [
-    //   {translateX: -1 * (width / 4)},
-    //   {rotateZ: '-0deg'},
-    //   {translateX: width / 4},
-    // ],
   },
 });
