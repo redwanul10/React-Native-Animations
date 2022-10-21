@@ -13,6 +13,9 @@ import SwipeToDelete from './src/swipeToDelete';
 import BkashPayment from './src/bKashPayment';
 import AddToCart from './src/addToCart';
 import ProductPage from './src/addToCart/productPage';
+import DeleteChat from './src/chatDelete';
+
+global.__reanimatedWorkletInit = () => {};
 
 const App = () => {
   return (
@@ -22,7 +25,8 @@ const App = () => {
       {/* <SwipeToDelete /> */}
       {/* <BkashPayment /> */}
       {/* <AddToCart /> */}
-      <ProductPage />
+      {/* <ProductPage /> */}
+      <DeleteChat />
     </>
   );
 };
