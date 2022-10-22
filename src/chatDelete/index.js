@@ -80,7 +80,7 @@ export default function DeleteChat() {
       const filteredList = conversations.filter((item, i) => i !== deleteIndex);
       setConversations(filteredList);
       console.log('DELETE FUNC CALLED');
-    }, 100);
+    }, 400);
   };
 
   return (
