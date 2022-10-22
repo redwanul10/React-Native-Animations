@@ -4,15 +4,10 @@ import React from 'react';
 const Chat = ({title, description, photo}) => {
   return (
     <View style={style.row}>
-      <Image
-        source={{uri: photo}}
-        style={{width: 45, height: 45, borderRadius: 30}}
-      />
+      <Image source={{uri: photo}} style={style.photo} />
       <View style={style.mailText}>
         <Text style={[style.title, style.bold]}>{title}</Text>
-        {/* <Text style={[style.subTitle, style.bold]} numberOfLines={1}>
-          {subTitle}
-        </Text> */}
+
         <Text style={[style.subTitle]} numberOfLines={1}>
           {description}
         </Text>
@@ -47,4 +42,5 @@ const style = StyleSheet.create({
   subTitle: {
     fontSize: 13,
   },
+  photo: {width: 45, height: 45, borderRadius: 30},
 });
