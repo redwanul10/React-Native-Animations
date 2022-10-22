@@ -22,16 +22,16 @@ const data = [
       'https://media-exp1.licdn.com/dms/image/C5603AQEwldxEowRyOg/profile-displayphoto-shrink_100_100/0/1641499615043?e=1671667200&v=beta&t=OB43yX8WHlHmMesVW3u1n9FuCVyAYt99IPs6u0NSi6g',
     time: '30m ago',
     avatarColor: '#f51b53',
-    description: 'Hi Dux, How are you today ?',
+    description: 'No, don’t be sorry...',
   },
   {
     id: 3,
     title: 'David Glauber',
     photo:
       'https://media-exp1.licdn.com/dms/image/C5603AQGo71PDTejH3A/profile-displayphoto-shrink_100_100/0/1578381122645?e=1671667200&v=beta&t=2InLWvvAB1eJElvEQeuosx-mK3BtBX7XgWwuaYryMlc',
-    time: 'yesterday',
+    time: '1h ago',
     avatarColor: '#f51b53',
-    description: 'Hi Dux, How are you today ?',
+    description: 'Thank you for the invitation',
   },
   {
     id: 4,
@@ -40,7 +40,7 @@ const data = [
       'https://media-exp1.licdn.com/dms/image/C4D03AQGN2KmXvw6CGg/profile-displayphoto-shrink_100_100/0/1637640642044?e=1671667200&v=beta&t=YZcTC-SSGn8OCD5RWvceMMOOnWmYJqafX3tlM1kA83M',
     time: '2d ago',
     avatarColor: '#f51b53',
-    description: 'Hi Dux, How are you today ?',
+    description: 'Ah, yes! I remember that',
   },
   {
     id: 5,
@@ -49,7 +49,25 @@ const data = [
       'https://media-exp1.licdn.com/dms/image/C4E03AQFzijW3X3GD_Q/profile-displayphoto-shrink_100_100/0/1616692227562?e=1671667200&v=beta&t=Bwo-H0ovvyRqV_8PR1o3tPpvn8d_s7QHSdVfwJ_zIjA',
     time: '2d ago',
     avatarColor: '#f51b53',
+    description: 'Well, I’ll see you later then.',
+  },
+  {
+    id: 6,
+    title: 'Sandrine Debatty',
+    photo:
+      'https://media-exp1.licdn.com/dms/image/C5603AQE4k-eNnp4iBg/profile-displayphoto-shrink_100_100/0/1545414129146?e=1671667200&v=beta&t=a19wm36xVD-0k2QPwXu75C5-QelUTn0N7AdlWQxKc-w',
+    time: '4d ago',
+    avatarColor: '#f51b53',
     description: 'Hi Dux, How are you today ?',
+  },
+  {
+    id: 6,
+    title: 'Mohamed Hammamy',
+    photo:
+      'https://media-exp1.licdn.com/dms/image/C4D03AQGmB-ts7Z83_A/profile-displayphoto-shrink_100_100/0/1615734277084?e=1671667200&v=beta&t=BpCAB7MKqDLIjgHMW-NmPwjGmdz58tK0eaGJoL81sGQ',
+    time: '4d ago',
+    avatarColor: '#f51b53',
+    description: 'Thanks. See you later',
   },
 ];
 
@@ -58,12 +76,11 @@ export default function DeleteChat() {
   const [conversations, setConversations] = useState(data);
 
   const handleDelete = (deleteIndex, isApplicable) => {
-    const isLastItem = conversations.length - 1 === isApplicable;
-    if (!isLastItem) return;
     setTimeout(() => {
       const filteredList = conversations.filter((item, i) => i !== deleteIndex);
       setConversations(filteredList);
-    }, 300);
+      console.log('DELETE FUNC CALLED');
+    }, 100);
   };
 
   return (

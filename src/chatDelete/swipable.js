@@ -18,6 +18,7 @@ const TRANSFORM_ORIGIN_Y = (width * 20.5) / 100;
 const TRANSFORM_ORIGIN_X = TRANSFORM_ORIGIN_Y + 10;
 
 const CONVERSATION_ITEM_HEIGHT = 70;
+const BACKGROUND_COLOR = '#EC255A';
 
 const CLAMP = {
   extrapolateLeft: Extrapolate.CLAMP,
@@ -30,7 +31,7 @@ const Swipable = props => {
 
   const scale = useSharedValue(1);
   const deg = useSharedValue(0);
-  const deg2 = useSharedValue(0);
+  const transform_origin_rotate_deg = useSharedValue(0);
   const translateTop = useSharedValue(0);
 
   const textOpacity = useSharedValue(0);
@@ -45,8 +46,11 @@ const Swipable = props => {
           duration: 300,
         },
         () => {
-          runOnJS(props.handleDelete)(props.selectedIndex, props.index);
-          runOnJS(props.setSelectedIndex)(undefined);
+          if (props.totalConversation - 1 === props.index) {
+            console.log('called ==== once');
+            runOnJS(props.handleDelete)(props.selectedIndex, props.index);
+            runOnJS(props.setSelectedIndex)(undefined);
+          }
         },
       ),
     );
@@ -75,15 +79,6 @@ const Swipable = props => {
         translateX.value = 0;
       }
     },
-    onEnd: _ => {
-      // if (translateX.value > 100) {
-      //   translateX.value = withTiming(screenWidth, {}, () => {
-      //     scaleX.value = withTiming(0);
-      //   });
-      // } else {
-      //   translateX.value = withSpring(0);
-      // }
-    },
   });
 
   const selectItem = () => {
@@ -96,7 +91,7 @@ const Swipable = props => {
     scale.value = withTiming(0.3, {duration: 300});
     deg.value = withTiming(4, {duration: 300}, done => {
       if (done) {
-        deg2.value = withTiming(90, {duration: 400});
+        transform_origin_rotate_deg.value = withTiming(90, {duration: 400});
         textOpacity.value = withDelay(
           1100,
           withTiming(1, {duration: 400}, opacityDone => {
@@ -123,7 +118,7 @@ const Swipable = props => {
     };
   });
 
-  const height = useAnimatedStyle(() => {
+  const translateTopStyle = useAnimatedStyle(() => {
     return {
       transform: [{translateY: translateTop.value}],
       // height: scaleX.value,
@@ -141,38 +136,37 @@ const Swipable = props => {
   });
 
   const scaleStyle = useAnimatedStyle(() => {
-    const scalee = interpolate(deg2.value, [0, 90], [1, 0], CLAMP);
+    const scalee = interpolate(
+      transform_origin_rotate_deg.value,
+      [0, 90],
+      [1, 0],
+      CLAMP,
+    );
 
     return {
       transform: [{scale: scalee}],
     };
   });
 
-  const rotateStyle2 = useAnimatedStyle(() => {
+  const rotateStyle = useAnimatedStyle(() => {
     return {
+      zIndex: translateX.value > -47 ? 9999 : 0,
       transform: [
         {translateX: TRANSFORM_ORIGIN_X},
         {translateY: TRANSFORM_ORIGIN_Y},
-        {rotate: `${deg2.value}deg`},
+        {rotate: `${transform_origin_rotate_deg.value}deg`},
         {translateX: -TRANSFORM_ORIGIN_X},
         {translateY: -TRANSFORM_ORIGIN_Y},
       ],
     };
   });
-  const backgroundColor = '#EC255A';
   return (
-    <Animated.View
-      style={[height, {backgroundColor, height: CONVERSATION_ITEM_HEIGHT}]}>
+    <Animated.View style={[translateTopStyle, styles.container]}>
       <PanGestureHandler
         failOffsetY={[-5, 5]}
         activeOffsetX={[-5, 5]}
         onGestureEvent={gestureHandler}>
-        <Animated.View
-          style={
-            [
-              // height,
-            ]
-          }>
+        <Animated.View>
           <Animated.Text style={[styles.deleteMsg, animatedTextStyle]}>
             Your message has been deleted
           </Animated.Text>
@@ -180,7 +174,7 @@ const Swipable = props => {
             <DeleteIcon onPress={handlePress} />
           </View>
           {toggle && (
-            <Animated.View style={[rotateStyle2]}>
+            <Animated.View style={[rotateStyle, {position: 'relative'}]}>
               <Animated.View style={animatedStyle}>
                 <Animated.View style={[scaleStyle]}>
                   {props.children}
@@ -197,6 +191,10 @@ const Swipable = props => {
 export default Swipable;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: BACKGROUND_COLOR,
+    height: CONVERSATION_ITEM_HEIGHT,
+  },
   deleteMsg: {
     position: 'absolute',
     left: 10,
