@@ -6,7 +6,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Animated, {
   interpolate,
   runOnJS,
@@ -19,7 +19,6 @@ import {
   PanGestureHandler,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-import {useState} from 'react/cjs/react.development';
 
 const SCREEN_WIDTH = Dimensions.get('window').height;
 
