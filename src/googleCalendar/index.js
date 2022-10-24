@@ -35,7 +35,6 @@ export default function GoogleCalendar() {
       ctx.startY = translationY.value;
     },
     onActive: (event, ctx) => {
-      console.log(ctx.startY, event.translationY);
       const total = ctx.startY + event.translationY;
 
       if (total < CALENDAR_HEIGHT) {
