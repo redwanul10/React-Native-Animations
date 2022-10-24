@@ -25,6 +25,7 @@ const SCREEN_WIDTH = Dimensions.get('window').height;
 const CALENDAR_HEIGHT = 150;
 const MENU_HEIGHT = 60;
 const GESTURE_SECTION_HEIGHT = SCREEN_WIDTH - CALENDAR_HEIGHT;
+const MANURAL_SCROLL = 50;
 
 export default function GoogleCalendar() {
   const [toggleGesture, setToggleGesture] = useState(false);
@@ -36,6 +37,7 @@ export default function GoogleCalendar() {
     },
     onActive: (event, ctx) => {
       const total = ctx.startY + event.translationY;
+      console.log('translateY', total);
 
       if (total < CALENDAR_HEIGHT) {
         translationY.value = total;
@@ -48,6 +50,11 @@ export default function GoogleCalendar() {
       }
     },
     onEnd: () => {
+      if (translationY.value >= MANURAL_SCROLL) {
+        translationY.value = withTiming(0, {duration: 200}, finished => {
+          if (finished) runOnJS(setToggleGesture)(false);
+        });
+      }
       if (translationY.value === 0) {
         runOnJS(setToggleGesture)(false);
       }
@@ -135,7 +142,7 @@ const styles = StyleSheet.create({
     left: 0,
     height: GESTURE_SECTION_HEIGHT,
     width: '100%',
-    // backgroundColor: 'green',
+    backgroundColor: 'green',
     zIndex: 99999,
   },
   calendar: {
