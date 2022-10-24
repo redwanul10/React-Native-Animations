@@ -14,6 +14,7 @@ import BkashPayment from './src/bKashPayment';
 import AddToCart from './src/addToCart';
 import ProductPage from './src/addToCart/productPage';
 import DeleteChat from './src/chatDelete';
+import GoogleCalendar from './src/googleCalendar';
 
 global.__reanimatedWorkletInit = () => {};
 
@@ -26,7 +27,8 @@ const App = () => {
       {/* <BkashPayment /> */}
       {/* <AddToCart /> */}
       {/* <ProductPage /> */}
-      <DeleteChat />
+      {/* <DeleteChat /> */}
+      <GoogleCalendar />
     </>
   );
 };
