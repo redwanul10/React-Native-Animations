@@ -1,7 +1,6 @@
 import {Text, SafeAreaView, StyleSheet, StatusBar, View} from 'react-native';
 import React, {useState} from 'react';
 import {FlatList, PanGestureHandler} from 'react-native-gesture-handler';
-import RecipeCard from './recipeCard';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Lottie from 'lottie-react-native';
 import Animated, {
@@ -17,42 +16,62 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import TabBar from './tabBar';
+import Card from './card';
 
 const data = [
   {
     id: 2,
-    photo:
-      'https://images.unsplash.com/photo-1613747526070-31ccc300ec07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
-    title: 'Milky Blueberry Ice Cream with Vanilla Essence',
+    photo: 'https://friendkit.cssninja.io/assets/img/avatars/dan.jpg',
+    postImage: 'https://friendkit.cssninja.io/assets/img/demo/unsplash/1.jpg',
+    name: 'Dan Walker',
+    description:
+      "Yesterday with @Karen Miller and @Marvin Stemperd at the #Rock'n'Rolla concert in LA. Was totally fantastic!",
     animated: false,
-    categories: ['Cheese', 'Dry Food', 'Ice Cream'],
+    likes: [
+      'https://friendkit.cssninja.io/assets/img/avatars/dan.jpg',
+      ,
+      'https://friendkit.cssninja.io/assets/img/avatars/david.jpg',
+      ,
+      'https://friendkit.cssninja.io/assets/img/avatars/edward.jpeg',
+    ],
   },
   {
     id: 3,
-    photo:
-      'https://pivoo.themepreview.xyz/home-four/wp-content/uploads/sites/5/2020/10/eiliv-sonas-aceron-Q-5eUQwEqm0-unsplash-592x665.jpg',
-
-    title: 'Puerto Rican Salmorejo (Tomatoes with Rice)',
+    photo: 'https://friendkit.cssninja.io/assets/img/avatars/elise.jpg',
+    postImage: 'https://friendkit.cssninja.io/assets/img/demo/unsplash/2.jpg',
+    name: 'Elise Walker',
+    description:
+      "Thanks a lot to @Gaelle and @Rolf for this wonderful team lunch. The food was really tasty and we had some great laughs. Thanks to all the team, you're all awesome !",
     animated: false,
-    categories: ['Rice', 'Vegetable', 'Dry Food'],
-  },
-  {
-    id: 4,
-    photo:
-      'https://media.istockphoto.com/photos/image-of-muffin-baking-tray-with-rows-of-homemade-apple-muffins-in-picture-id1318467379?b=1&k=20&m=1318467379&s=170667a&w=0&h=wheMYpblwnHfVRKsiV5e5b7wBqXMQ4ps-ADGv3d0-BQ=',
-    title: 'Vanilla Cupcake Recipe',
-    animated: false,
-    categories: ['Dry Food'],
-  },
-  {
-    id: 1,
-    photo:
-      'https://pivoo.themepreview.xyz/home-four/wp-content/uploads/sites/5/2020/10/louis-hansel-shotsoflouis-LIJujhJviMI-unsplash-592x665.jpg',
-    title: 'Keema Aloo (Beef and Potatoes) with Sizzling Vegetables',
-    animated: false,
-    categories: ['Desert', 'Dry Food', 'Rice'],
+    likes: [
+      'https://friendkit.cssninja.io/assets/img/avatars/dan.jpg',
+      ,
+      'https://friendkit.cssninja.io/assets/img/avatars/david.jpg',
+      ,
+      'https://friendkit.cssninja.io/assets/img/avatars/edward.jpeg',
+    ],
   },
 ];
+
+const fDAta = {
+  id: new Date().getTime(),
+  photo:
+    'https://media-exp1.licdn.com/dms/image/C4D03AQGkkyKueLxgqQ/profile-displayphoto-shrink_100_100/0/1614256871209?e=1672272000&v=beta&t=sHEWQYjkFBt-cmD1PMBDLiHC21gXHRFpw1-oFemZFQU',
+  postImage:
+    'https://images.unsplash.com/photo-1591115765373-5207764f72e7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+  name: 'Daniele Carta',
+  description:
+    'Join Next.js Conf to hear @kelseyhightower and @rauchg discuss the future of the Web, live from San Francisco on Oct 25.',
+  title: 'Milky Blueberry Ice Cream with Vanilla Essence',
+  animated: true,
+  likes: [
+    'https://media-exp1.licdn.com/dms/image/C5603AQE-vA--43mj7g/profile-displayphoto-shrink_800_800/0/1550971822403?e=1672272000&v=beta&t=GyV8CUH9vUd2bCuiLfH63lVVN2w5Rm9QDbBC0XBNmRU',
+    ,
+    'https://friendkit.cssninja.io/assets/img/avatars/david.jpg',
+    ,
+    'https://media-exp1.licdn.com/dms/image/C4D03AQGi6YrXkRJN7g/profile-displayphoto-shrink_800_800/0/1657254123006?e=1672272000&v=beta&t=qBvd_rthwUaEo6HOwVm1gMRpV6nJKqnQAJ62POtMncA',
+  ],
+};
 
 const REFRESH_AREA_HEIGHT = 130;
 
@@ -69,18 +88,7 @@ export default function PullToRefresh() {
 
   const fetchData = () => {
     setTimeout(() => {
-      setRecipes([
-        {
-          id: new Date().getTime(),
-          photo:
-            'https://pivoo.themepreview.xyz/home-four/wp-content/uploads/sites/5/2020/10/rebecca-aldama-0zgNo99FYLk-unsplash-592x665.jpg',
-          title:
-            'Blastica Beef Burger with Capsicum Fillet with Broccoli & Spinach',
-          animated: true,
-          categories: ['Vegetables'],
-        },
-        ...recipes,
-      ]);
+      setRecipes([fDAta, ...recipes]);
     }, 2000);
 
     setTimeout(() => {
@@ -213,47 +221,59 @@ export default function PullToRefresh() {
         style={[{height: 40, backgroundColor: '#E0144C'}, statusBarStyle]}
       />
 
-      <SafeAreaView style={{flex: 1, marginHorizontal: 15, marginVertical: 15}}>
-        <Animated.View style={[styles.pullToRefreshArea, animatedSpace]}>
-          <Animated.View
-            style={[
-              {justifyContent: 'center', alignItems: 'center'},
-              pullUpTranslateStyle,
-            ]}>
-            <Animated.View style={pullDownIconSection}>
-              <Icon name="arrow-down-circle" color="black" size={35} />
+      <SafeAreaView
+        style={{
+          flex: 1,
+
+          backgroundColor: '#f4f4f4',
+        }}>
+        <View style={{flex: 1, marginHorizontal: 15, marginVertical: 15}}>
+          <Animated.View style={[styles.pullToRefreshArea, animatedSpace]}>
+            <Animated.View
+              style={[
+                {justifyContent: 'center', alignItems: 'center'},
+                pullUpTranslateStyle,
+              ]}>
+              <Animated.View style={pullDownIconSection}>
+                <Icon name="arrow-down-circle" color="black" size={35} />
+              </Animated.View>
+
+              <Text>Pull Down to Refresh</Text>
             </Animated.View>
-
-            <Text>Pull Down to Refresh</Text>
+            {toggleLottie && (
+              <>
+                <Lottie
+                  source={require('./circlesRotate.json')}
+                  style={styles.lottieView}
+                  autoPlay
+                />
+              </>
+            )}
           </Animated.View>
-          {toggleLottie && (
-            <>
-              <Lottie
-                source={require('./circlesRotate.json')}
-                style={styles.lottieView}
-                autoPlay
-              />
-            </>
+
+          <FlatList
+            data={recipes}
+            ref={flatlistRef}
+            onScroll={handleOnScroll}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => (
+              <>
+                {/* <RecipeCard item={item} /> */}
+                <Card item={item} />
+              </>
+            )}
+          />
+
+          {toggleGesture && (
+            <PanGestureHandler onGestureEvent={gestureHandler}>
+              <Animated.View style={styles.gesture} />
+            </PanGestureHandler>
           )}
-        </Animated.View>
-
-        <FlatList
-          data={recipes}
-          ref={flatlistRef}
-          onScroll={handleOnScroll}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => <RecipeCard item={item} />}
-        />
-
-        {toggleGesture && (
-          <PanGestureHandler onGestureEvent={gestureHandler}>
-            <Animated.View style={styles.gesture}></Animated.View>
-          </PanGestureHandler>
-        )}
-
+        </View>
         <TabBar />
       </SafeAreaView>
+      <SafeAreaView style={{backgroundColor: 'white'}} />
     </>
   );
 }
