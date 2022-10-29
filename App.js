@@ -15,6 +15,7 @@ import AddToCart from './src/addToCart';
 import ProductPage from './src/addToCart/productPage';
 import DeleteChat from './src/chatDelete';
 import GoogleCalendar from './src/googleCalendar';
+import PullToRefresh from './src/pullToRefresh';
 
 global.__reanimatedWorkletInit = () => {};
 
@@ -28,7 +29,8 @@ const App = () => {
       {/* <AddToCart /> */}
       {/* <ProductPage /> */}
       {/* <DeleteChat /> */}
-      <GoogleCalendar />
+      {/* <GoogleCalendar /> */}
+      <PullToRefresh />
     </>
   );
 };
