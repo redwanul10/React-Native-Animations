@@ -217,9 +217,8 @@ export default function PullToRefresh() {
         barStyle="light-content"
       />
 
-      <Animated.View
-        style={[{height: 40, backgroundColor: '#E0144C'}, statusBarStyle]}
-      />
+      {/* Custom Status bar */}
+      <Animated.View style={[styles.customStatusBar, statusBarStyle]} />
 
       <SafeAreaView
         style={{
@@ -227,13 +226,10 @@ export default function PullToRefresh() {
 
           backgroundColor: '#f4f4f4',
         }}>
-        <View style={{flex: 1, marginHorizontal: 15, marginVertical: 15}}>
+        <View style={styles.contentContainer}>
+          {/* Pull to Refresh Section */}
           <Animated.View style={[styles.pullToRefreshArea, animatedSpace]}>
-            <Animated.View
-              style={[
-                {justifyContent: 'center', alignItems: 'center'},
-                pullUpTranslateStyle,
-              ]}>
+            <Animated.View style={[styles.center, pullUpTranslateStyle]}>
               <Animated.View style={pullDownIconSection}>
                 <Icon name="arrow-down-circle" color="black" size={35} />
               </Animated.View>
@@ -251,6 +247,7 @@ export default function PullToRefresh() {
             )}
           </Animated.View>
 
+          {/* Blog Post Section */}
           <FlatList
             data={recipes}
             ref={flatlistRef}
@@ -320,4 +317,7 @@ const styles = StyleSheet.create({
     width: '100%',
     overflow: 'hidden',
   },
+  customStatusBar: {height: 40, backgroundColor: '#E0144C'},
+  contentContainer: {flex: 1, marginHorizontal: 15, marginVertical: 15},
+  center: {justifyContent: 'center', alignItems: 'center'},
 });
