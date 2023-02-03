@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions, Image} from 'react-native';
+import {View, StyleSheet, Text, Dimensions} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -87,70 +87,11 @@ const Youtube = () => {
     };
   });
 
-  // const gestureHandler = useAnimatedGestureHandler({
-  //   onStart: (_, ctx) => {
-  //     ctx.translateX = translateX.value;
-  //     ctx.translateY = translateY.value;
-  //   },
-  //   onActive: (event, ctx) => {
-  //     translateX.value = event.translationX + ctx.translateX;
-  //     translateY.value = event.translationY + ctx.translateY;
-  //   },
-  //   onEnd: (_, ctx) => {
-  //     if (translateY.value > half) {
-  //       translateY.value = withSpring(half2);
-  //     } else {
-  //       translateX.value = withSpring(0);
-  //       translateY.value = withSpring(0);
-  //     }
-  //   },
-  // });
-
-  //   const x = useSharedValue(0);
-
-  //   const gestureHandler = useAnimatedGestureHandler({
-  //     onStart: (_, ctx) => {
-  //       ctx.startX = x.value;
-  //       console.log('started');
-  //     },
-  //     onActive: (event, ctx) => {
-  //       x.value = ctx.startX + event.translationX;
-  //     },
-  //     onEnd: _ => {
-  //       x.value = withSpring(0);
-  //     },
-  //   });
-
-  //   const animatedStyle = useAnimatedStyle(() => {
-  //     return {
-  //       transform: [
-  //         {
-  //           translateX: x.value,
-  //         },
-  //       ],
-  //     };
-  //   });
-
   const translateStyle = useAnimatedStyle(() => {
     return {
-      transform: [
-        // {translateX: translateX.value},
-        {translateY: translateY.value},
-      ],
+      transform: [{translateY: translateY.value}],
     };
   });
-
-  // const topStyle = useAnimatedStyle(() => {
-  //   return {
-  //     transform: [
-  //       {
-  //         translateX: interpolate(translateY.value, [0, 100], [0, 50], {
-  //           // extrapolateRight: Extrapolate.CLAMP,
-  //         }),
-  //       },
-  //     ],
-  //   };
-  // });
 
   return (
     <>
@@ -204,44 +145,6 @@ const Youtube = () => {
           </Animated.View>
         </Animated.View>
       </PanGestureHandler>
-
-      {/* <PanGestureHandler onGestureEvent={gestureHandler}>
-        <Animated.View
-          style={[
-            {
-              backgroundColor: 'red',
-              borderTopColor: 'grey',
-              borderTopWidth: 2,
-              height: height / 1.5,
-            },
-            // translateStyle,
-          ]}></Animated.View>
-      </PanGestureHandler> */}
-      {/* <Animated.View
-        style={[
-          {
-            width: 30,
-            height: 30,
-            backgroundColor: 'blue',
-            borderRadius: 100,
-          },
-          topStyle,
-        ]}></Animated.View> */}
-
-      {/* <PanGestureHandler onGestureEvent={gestureHandler}>
-        <Animated.View
-          style={[
-            {
-              width: 30,
-              height: 30,
-              backgroundColor: 'red',
-              borderRadius: 100,
-            },
-            ,
-            animatedStyle,
-          ]}
-        />
-      </PanGestureHandler> */}
     </>
   );
 };

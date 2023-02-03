@@ -8,19 +8,21 @@ const SIZES = Dimensions.get('window');
 // IMAGE SIZES
 const BIG_IMAGE_SIZE = SIZES.height / 3.2;
 
-const VideoCard = ({data}) => {
-  const expandPlayer = () => {};
+const VideoCard = ({data, setSelectedVideo}) => {
   return (
     <View style={{marginBottom: 20}}>
-      <TouchableWithoutFeedback onPress={expandPlayer}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          setSelectedVideo(data);
+        }}>
         <View style={styles.playerContainer}>
           <Image
             style={[
-              {width: '100%', height: BIG_IMAGE_SIZE, resizeMode: 'cover'},
+              {width: '100%', height: BIG_IMAGE_SIZE, resizeMode: 'contain'},
             ]}
             source={{
               uri:
-                data?.snippet?.thumbnails?.medium?.url ||
+                data?.thumbnail ||
                 'https://i.ytimg.com/vi/duJNVv9m2NY/maxresdefault.jpg',
             }}
           />
@@ -29,18 +31,20 @@ const VideoCard = ({data}) => {
           <View style={[styles.rowCenter, {justifyContent: 'space-between'}]}>
             <View style={styles.rowCenter}>
               <Image
-                style={{width: 50, height: 50, marginRight: 10}}
+                style={styles.channelLogo}
                 source={{
-                  uri: 'https://yt3.ggpht.com/ytc/AKedOLR-TP_Uc-gh9UWENj1CsWNVyxDRwCikaVARVwhY=s48-c-k-c0x00ffffff-no-rj',
+                  uri:
+                    data?.channelLogo ||
+                    'https://yt3.ggpht.com/ytc/AKedOLR-TP_Uc-gh9UWENj1CsWNVyxDRwCikaVARVwhY=s48-c-k-c0x00ffffff-no-rj',
                 }}
               />
               <View style={{flex: 1}}>
                 <Text
                   numberOfLines={2}
-                  style={{fontWeight: 'bold', fontSize: 18}}>
-                  {data?.snippet?.title}
+                  style={{fontWeight: 'bold', fontSize: 16, marginBottom: 5}}>
+                  {data?.title}
                 </Text>
-                <Text>{data?.snippet?.channelTitle}</Text>
+                <Text>{data?.channelTitle}</Text>
               </View>
             </View>
           </View>
@@ -53,38 +57,25 @@ const VideoCard = ({data}) => {
 export default VideoCard;
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  sideTitle: {
-    paddingLeft: 20,
-    fontSize: 18,
-    color: 'black',
-  },
   container: {
     paddingHorizontal: 10,
     paddingTop: 10,
   },
-  iconsContainer: {
-    marginVertical: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
+
   rowCenter: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  subBtn: {
-    fontSize: 16,
-    color: 'white',
-    backgroundColor: 'red',
-    padding: 10,
-  },
+
   playerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  channelLogo: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
+    borderRadius: 50,
   },
 });

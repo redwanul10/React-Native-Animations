@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect} from 'react';
 import {
   View,
@@ -23,29 +24,18 @@ import {
 } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Entypo';
-import Video from 'react-native-video';
+import VideoCard from './videoCard';
 
 const SIZES = Dimensions.get('window');
-
-const navigationHeight =
-  Dimensions.get('screen').height - SIZES.height + StatusBar.currentHeight;
 
 // IMAGE SIZES
 const IMAGE_TOP_DISTANCE = 100;
 const IMAGE_BOTTOM_DISTANCE = SIZES.width / 1.2;
-const SMALL_IMAGE_SIZE = 120;
 const BIG_IMAGE_SIZE = SIZES.height / 3.2;
 
 // IMAGE WIDTH
 const IMAGE_WIDTH_COL = (SIZES.width * 33) / 100;
-const TITLE_WIDTH_COL = (SIZES.width * 33) / 100;
 
-// const IMAGE_TOP_DISTANCE = 100;
-// const IMAGE_TOP_DISTANCE = 100;
-
-// End of Screen
-const FINISH_TOP = (SIZES.height * 70) / 100;
-const FINISH_BOTTOM = (SIZES.height * 90) / 100;
 const screenHeight = Dimensions.get('screen').height;
 let bottomTranslateY = (screenHeight * 95) / 100 - IMAGE_WIDTH_COL - 20;
 
@@ -85,23 +75,13 @@ const YoutubePlayer = ({onClose, selectedVideo, bottomPosition}) => {
       }
 
       if (translateY.value > 100) {
-        // translateY.value = withTiming(screenHeight - IMAGE_WIDTH_COL - StatusBar.currentHeight - 10, {
-        //   duration: 300,
-        // });
         translateY.value = withTiming(bottomTranslateY, {
           duration: 300,
         });
         return;
       }
 
-      // if (bottomTranslateY > translateY.value) {
-      //   translateY.value = withTiming(0, { duration: 300 });
-      // }
-
-      // else {
-      //   // translateX.value = withTiming(0, {duration: 300});
       translateY.value = withTiming(0, {duration: 300});
-      // }
     },
   });
 
@@ -110,26 +90,6 @@ const YoutubePlayer = ({onClose, selectedVideo, bottomPosition}) => {
       transform: [{translateY: translateY.value}],
     };
   });
-
-  // translateY: interpolate(
-  //   translateY.value,
-  //   [0, bottomPosition - (SIZES.height - bottomPosition)],
-  //   [0, bottomPosition - (SIZES.height - bottomPosition)],
-  //   {
-  //     extrapolateRight: Extrapolate.CLAMP,
-  //     extrapolateLeft: Extrapolate.CLAMP,
-  //   }
-  // ),
-
-  // const sideTitleStyle = useAnimatedStyle(() => {
-  //   return {
-  //     width: interpolate(
-  //       translateY.value,
-  //       [IMAGE_TOP_DISTANCE, IMAGE_BOTTOM_DISTANCE],
-  //       [0, 100],
-  //     ),
-  //   };
-  // });
 
   const imageStyle = useAnimatedStyle(() => {
     return {
@@ -184,18 +144,8 @@ const YoutubePlayer = ({onClose, selectedVideo, bottomPosition}) => {
   };
 
   return (
-    <Animated.View
-      style={[
-        translateStyle,
-        {
-          backgroundColor: 'white',
-          elevation: 10,
-          width: '100%',
-          height: '100%',
-          position: 'absolute',
-          zIndex: 9999,
-        },
-      ]}>
+    <Animated.View style={[translateStyle, styles.wrapper]}>
+      {/* PLAYER Section */}
       <View style={styles.playerContainer}>
         <PanGestureHandler onGestureEvent={gestureHandler}>
           <Animated.View>
@@ -207,7 +157,7 @@ const YoutubePlayer = ({onClose, selectedVideo, bottomPosition}) => {
                   style={[{width: '100%', height: '100%', resizeMode: 'cover'}]}
                   source={{
                     uri:
-                      selectedVideo?.snippet?.thumbnails?.medium?.url ||
+                      selectedVideo?.thumbnail ||
                       'https://i.ytimg.com/vi/duJNVv9m2NY/maxresdefault.jpg',
                   }}
                 />
@@ -221,11 +171,12 @@ const YoutubePlayer = ({onClose, selectedVideo, bottomPosition}) => {
                     width: (SIZES.width * 43) / 100,
                   },
                 ]}>
-                {selectedVideo?.snippet?.title}
+                {selectedVideo?.title}
               </Text>
             </TouchableWithoutFeedback>
           </Animated.View>
         </PanGestureHandler>
+
         <View
           style={[styles.iconsContainer, {width: (SIZES.width * 23) / 100}]}>
           <Icon2 name="controller-play" size={30} color="black" />
@@ -238,41 +189,52 @@ const YoutubePlayer = ({onClose, selectedVideo, bottomPosition}) => {
           </TouchableOpacity>
         </View>
       </View>
+
       <Animated.View style={[detailsStyle, styles.container]}>
-        <Text style={styles.title}>{selectedVideo?.snippet?.title}</Text>
+        <Text style={styles.title}>{selectedVideo?.title}</Text>
+        {/* Like Dislike Buttons */}
         <View style={styles.iconsContainer}>
           <Icon name="like2" size={30} color="black" />
           <Icon name="dislike2" size={30} color="black" />
           <Icon name="sharealt" size={30} color="black" />
           <Icon name="addfile" size={30} color="black" />
         </View>
+
+        {/* Channel Info */}
         <View style={[styles.rowCenter, {justifyContent: 'space-between'}]}>
           <View style={styles.rowCenter}>
             <Image
-              style={{width: 50, height: 50, marginRight: 10}}
+              style={styles.channelLogo}
               source={{
-                uri: 'https://yt3.ggpht.com/ytc/AKedOLR-TP_Uc-gh9UWENj1CsWNVyxDRwCikaVARVwhY=s48-c-k-c0x00ffffff-no-rj',
+                uri:
+                  selectedVideo?.channelLogo ||
+                  'https://yt3.ggpht.com/ytc/AKedOLR-TP_Uc-gh9UWENj1CsWNVyxDRwCikaVARVwhY=s48-c-k-c0x00ffffff-no-rj',
               }}
             />
             <View>
-              <Text style={{fontWeight: 'bold', fontSize: 18}}>
-                {selectedVideo?.snippet?.channelTitle}
+              <Text style={{fontWeight: 'bold', fontSize: 18, marginBottom: 5}}>
+                {selectedVideo?.channelName}
               </Text>
               <Text>41.7K subscribers</Text>
             </View>
           </View>
 
           <Text style={styles.subBtn}>Subscribe</Text>
-          {/* <Video
-          source={{ uri: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4?_=1' }}
-          style={{ width: 300, height: 300 }}
-          controls={true}
-          playInBackground={true}
-          // ref={(ref) => {
-          // this.player = ref
-          // }} 
-          /> */}
         </View>
+        <Text style={{fontWeight: 'bold', marginTop: 20}}>Comments - 20</Text>
+        <Text style={styles.commentSection}>Add Comment...</Text>
+
+        <VideoCard
+          setSelectedVideo={() => {}}
+          data={{
+            channelLogo:
+              'https://yt3.ggpht.com/ytc/AL5GRJWhzi26YnOvIsPfOTBEQkx8VaNUuieO-4ypxg4I7A=s88-c-k-c0x00ffffff-no-rj',
+            thumbnail:
+              'https://i.ytimg.com/vi/cu5BZNymMzs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD9uEFytdrh6GT6-VYv5qYmJEoFKg',
+            title: 'Top 10 Places To Visit in 2023 (Year of Travel)',
+            channelTitle: 'Ryan Shirley   150k views  3 months ago',
+          }}
+        />
       </Animated.View>
     </Animated.View>
   );
@@ -281,10 +243,21 @@ const YoutubePlayer = ({onClose, selectedVideo, bottomPosition}) => {
 export default YoutubePlayer;
 
 const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: 'white',
+    elevation: 10,
+    width: '100%',
+    height: SIZES.height,
+    position: 'absolute',
+    zIndex: 9999,
+    overflow: 'hidden',
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'black',
+    marginTop: 10,
+    lineHeight: 30,
   },
   sideTitle: {
     paddingLeft: 5,
@@ -306,13 +279,27 @@ const styles = StyleSheet.create({
   },
   subBtn: {
     fontSize: 16,
-    color: 'white',
-    backgroundColor: 'red',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    color: 'red',
     padding: 10,
   },
   playerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  commentSection: {
+    backgroundColor: '#f2f2f2',
+    paddingVertical: 8,
+    paddingLeft: 20,
+    marginTop: 10,
+  },
+  channelLogo: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
+    borderRadius: 50,
+    resizeMode: 'contain',
   },
 });
