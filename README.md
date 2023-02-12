@@ -9,5 +9,5 @@ React Native Animations is a collection of animations built using React Native
 | 3  | Delete Chat        | [link](https://www.youtube.com/shorts/y2IlplGbu-Y)      |
 | 4     | Add to Cart       | [link](https://www.youtube.com/shorts/Zj8YP7nUtuU)   |
 | 5   | whatsapp search        | link      |
-| 6   | Gmail Swipe to delete        | link      |
+| 6   | Gmail Swipe to delete        | [link](https://www.youtube.com/shorts/rT3Tf1021vM)      |
 | 7   | Slider        | link      |
