@@ -19,11 +19,12 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import CloseIcon from '../components/closeIcon';
 import BackgroundImage from './backgrounImage';
 import SliderDot from './dots';
 
 const data = [
-  'https://images.unsplash.com/photo-1570745859748-6ba2014423eb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
+  // 'https://images.unsplash.com/photo-1570745859748-6ba2014423eb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
   'https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDExfHx8ZW58MHx8fHw%3D&w=1000&q=80',
   'https://i.pinimg.com/564x/3d/c8/26/3dc826c7103ae621402e887c55f2cdbf.jpg',
   'https://cdn.dribbble.com/users/3281732/screenshots/9165292/media/ccbfbce040e1941972dbc6a378c35e98.jpg?compress=1&resize=1200x1200',
@@ -37,7 +38,7 @@ const data = [
 
 const AnimatedFlatlist = Animated.createAnimatedComponent(FlatList);
 
-export default () => {
+export default ({closeComponent}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   let sliderRef = useRef();
 
@@ -68,6 +69,11 @@ export default () => {
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <CloseIcon
+        onPress={() => {
+          closeComponent();
+        }}
+      />
       {data?.map((item, index) => (
         <BackgroundImage
           item={item}

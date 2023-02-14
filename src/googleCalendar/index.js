@@ -19,6 +19,7 @@ import {
   PanGestureHandler,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
+import CloseIcon from '../components/closeIcon';
 
 const SCREEN_WIDTH = Dimensions.get('window').height;
 
@@ -27,7 +28,7 @@ const MENU_HEIGHT = 60;
 const GESTURE_SECTION_HEIGHT = SCREEN_WIDTH - CALENDAR_HEIGHT;
 const MANURAL_SCROLL = 50;
 
-export default function GoogleCalendar() {
+export default function GoogleCalendar({closeComponent}) {
   const [toggleGesture, setToggleGesture] = useState(false);
   const translationY = useSharedValue(0);
 
@@ -90,6 +91,7 @@ export default function GoogleCalendar() {
 
   return (
     <SafeAreaView style={{flex: 1}}>
+      <CloseIcon color="black" onPress={() => closeComponent()} />
       <View style={{overflow: 'hidden'}}>
         {/* GESTURE SECTION */}
         {toggleGesture && (

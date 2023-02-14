@@ -6,6 +6,7 @@ import {
   StatusBar,
   TouchableOpacity,
   TextInput,
+  Pressable,
 } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -18,7 +19,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-export default function WhatsappHeader() {
+export default function WhatsappHeader({closeComponent}) {
   const [toggleSearch, setToggleSearch] = useState(false);
   const [showSearchHeader, setShowSearchHeader] = useState(false);
 
@@ -113,6 +114,11 @@ export default function WhatsappHeader() {
           <Text style={[style.headerText, style.tab]}>calls</Text>
         </View>
       </View>
+      <Pressable
+        onPress={() => closeComponent()}
+        style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>Go Back to Animation List</Text>
+      </Pressable>
     </View>
   );
 }

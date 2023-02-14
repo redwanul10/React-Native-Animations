@@ -2,12 +2,14 @@ import {View, Text, StyleSheet, StatusBar, SafeAreaView} from 'react-native';
 import React from 'react';
 import UserCard from './userCard';
 import TapToPay from './tapToPay';
+import CloseIcon from '../components/closeIcon';
 
-const BkashPayment = () => {
+const BkashPayment = ({closeComponent}) => {
   return (
     <>
       <StatusBar backgroundColor="#e2136e" />
       <SafeAreaView style={style.container}>
+        <CloseIcon color="black" onPress={() => closeComponent()} />
         <View style={style.innerContent}>
           <View style={{flex: 1, paddingHorizontal: 20}}>
             <Text style={style.heading}>
