@@ -6,6 +6,7 @@ import {
   StatusBar,
   Platform,
   SafeAreaView,
+  Pressable,
 } from 'react-native';
 import React from 'react';
 import AddToCart from '.';
@@ -13,7 +14,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 const isAndroid = Platform.OS === 'android';
 
-export default function ProductPage() {
+export default function ProductPage({closeComponent}) {
   return (
     <>
       {isAndroid ? (
@@ -24,9 +25,9 @@ export default function ProductPage() {
           <StatusBar barStyle="light-content" backgroundColor="#425F57" />
         </>
       )}
-      <View style={styles.backBtn}>
+      <Pressable onPress={() => closeComponent()} style={styles.backBtn}>
         <Icon name="arrowleft" size={20} color="black" />
-      </View>
+      </Pressable>
       <View style={styles.mainContent}>
         <View style={styles.imageContainer}>
           <Image
@@ -118,5 +119,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     left: 15,
     top: isAndroid ? 25 : '8%',
+    zIndex: 4,
   },
 });
