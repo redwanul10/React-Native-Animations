@@ -16,10 +16,9 @@ import ProductPage from './src/addToCart/productPage';
 import DeleteChat from './src/chatDelete';
 import GoogleCalendar from './src/googleCalendar';
 import Youtube from './src/youtube';
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-
-// import PullToRefresh from './src/pullToRefresh';
+import PullToRefresh from './src/pullToRefresh';
 
 global.__reanimatedWorkletInit = () => {};
 
@@ -31,6 +30,7 @@ const AnimationComponents = [
   'Product Page',
   'Delete Chat',
   'Google Calendar',
+  'Pull to Refresh',
 ];
 
 const App = () => {
@@ -54,6 +54,8 @@ const App = () => {
         return <GoogleCalendar closeComponent={() => setSelectedTopic(null)} />;
       case 'Youtube':
         return <Youtube closeComponent={() => setSelectedTopic(null)} />;
+      case 'Pull to Refresh':
+        return <PullToRefresh closeComponent={() => setSelectedTopic(null)} />;
       default:
         return <Slider closeComponent={() => setSelectedTopic(null)} />;
     }
@@ -66,30 +68,9 @@ const App = () => {
           <Pressable
             key={index.toString()}
             onPress={() => setSelectedTopic(item)}
-            style={{
-              padding: 20,
-              borderBottomWidth: 1,
-              borderBottomColor: '#dcdcdc',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{
-                fontSize: 24,
-                fontWeight: 'bold',
-                color: '#000',
-                marginRight: 20,
-              }}>
-              👉
-            </Text>
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: 'bold',
-                color: '#000',
-              }}>
-              {`${index + 1}. ${item}`}
-            </Text>
+            style={styles.menuItem}>
+            <Text style={styles.menuItemIcon}>👉</Text>
+            <Text style={styles.menuItemName}>{`${index + 1}. ${item}`}</Text>
           </Pressable>
         );
       })}
@@ -98,3 +79,24 @@ const App = () => {
 };
 
 export default App;
+
+const styles = StyleSheet.create({
+  menuItem: {
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dcdcdc',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  menuItemIcon: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000',
+    marginRight: 20,
+  },
+  menuItemName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+});
