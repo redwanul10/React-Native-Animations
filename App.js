@@ -19,6 +19,7 @@ import Youtube from './src/youtube';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import PullToRefresh from './src/pullToRefresh';
+import TwitterLikeAnimation from './src/TwitterLike';
 
 global.__reanimatedWorkletInit = () => {};
 
@@ -56,6 +57,10 @@ const App = () => {
         return <Youtube closeComponent={() => setSelectedTopic(null)} />;
       case 'Pull to Refresh':
         return <PullToRefresh closeComponent={() => setSelectedTopic(null)} />;
+      case 'Twitter Like Button':
+        return (
+          <TwitterLikeAnimation closeComponent={() => setSelectedTopic(null)} />
+        );
       default:
         return <Slider closeComponent={() => setSelectedTopic(null)} />;
     }
@@ -63,7 +68,7 @@ const App = () => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      {AnimationComponents.map((item, index) => {
+      {/* {AnimationComponents.map((item, index) => {
         return (
           <Pressable
             key={index.toString()}
@@ -73,7 +78,8 @@ const App = () => {
             <Text style={styles.menuItemName}>{`${index + 1}. ${item}`}</Text>
           </Pressable>
         );
-      })}
+      })} */}
+      <TwitterLikeAnimation />
     </SafeAreaView>
   );
 };
