@@ -4,7 +4,6 @@ import Header from './header';
 import Card from './card';
 import Swipable from './swipable';
 import {FlatList} from 'react-native-gesture-handler';
-import CloseIcon from '../components/closeIcon';
 
 const data = [
   {
@@ -114,11 +113,10 @@ const data = [
   },
 ];
 
-const SwipeToDelete = ({closeComponent}) => {
+const SwipeToDelete = () => {
   return (
     <>
       <SafeAreaView style={style.container}>
-        <CloseIcon color="black" onPress={() => closeComponent()} />
         <View style={{paddingHorizontal: 10, paddingTop: 40}}>
           <Header />
           <FlatList

@@ -39,9 +39,10 @@ export default function Card({item}) {
       {/* Post Footer */}
       <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
         <View style={styles.likedUsers}>
-          {item.likes.map(userPhoto => (
+          {item.likes.map((userPhoto, index) => (
             <Image
               style={styles.likedUserPhoto}
+              key={index}
               source={{
                 uri: userPhoto,
               }}

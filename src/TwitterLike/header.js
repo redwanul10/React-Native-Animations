@@ -4,7 +4,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function Header() {
   return (
-    <View style={{marginBottom: 10}}>
+    <View style={{marginBottom: 10, backgroundColor: 'white'}}>
       <View style={{paddingHorizontal: 20}}>
         <AntDesign
           style={styles.logo}

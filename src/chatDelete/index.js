@@ -4,7 +4,6 @@ import Chat from './chat';
 import LinearGradient from 'react-native-linear-gradient';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Swipable from './swipable';
-import CloseIcon from '../components/closeIcon';
 
 const data = [
   {
@@ -72,7 +71,7 @@ const data = [
   },
 ];
 
-export default function DeleteChat({closeComponent}) {
+export default function DeleteChat() {
   const [selectedIndex, setSelectedIndex] = useState(undefined);
   const [conversations, setConversations] = useState(data);
 
@@ -86,7 +85,6 @@ export default function DeleteChat({closeComponent}) {
 
   return (
     <>
-      <CloseIcon onPress={() => closeComponent()} />
       <StatusBar
         barStyle="light-content"
         translucent={true}

@@ -19,7 +19,6 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import CloseIcon from '../components/closeIcon';
 import BackgroundImage from './backgrounImage';
 import SliderDot from './dots';
 
@@ -38,7 +37,7 @@ const data = [
 
 const AnimatedFlatlist = Animated.createAnimatedComponent(FlatList);
 
-export default ({closeComponent}) => {
+export default () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   let sliderRef = useRef();
 
@@ -69,11 +68,6 @@ export default ({closeComponent}) => {
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <CloseIcon
-        onPress={() => {
-          closeComponent();
-        }}
-      />
       {data?.map((item, index) => (
         <BackgroundImage
           item={item}

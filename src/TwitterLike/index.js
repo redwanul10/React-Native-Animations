@@ -46,8 +46,8 @@ export default function TwitterLikeAnimation() {
       <Header />
       <View style={styles.container}>
         <ScrollView>
-          {tweets.map(data => (
-            <Tweet details={data} />
+          {tweets.map((data, index) => (
+            <Tweet details={data} key={index} />
           ))}
         </ScrollView>
       </View>

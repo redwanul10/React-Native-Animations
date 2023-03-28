@@ -3,88 +3,78 @@
  * https://github.com/facebook/react-native
  *
  * @format
- * @flow strict-local
  */
 
 import React from 'react';
+import {Platform, StyleSheet} from 'react-native';
+
+import TwitterLikeAnimation from './src/TwitterLike';
 import Slider from './src/slider/slider';
-import WhatsappHeader from './src/whatsAppSearch';
-import SwipeToDelete from './src/swipeToDelete';
-import BkashPayment from './src/bKashPayment';
 import AddToCart from './src/addToCart';
-import ProductPage from './src/addToCart/productPage';
+import BkashPayment from './src/bKashPayment';
 import DeleteChat from './src/chatDelete';
 import GoogleCalendar from './src/googleCalendar';
-import Youtube from './src/youtube';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import PullToRefresh from './src/pullToRefresh';
-import TwitterLikeAnimation from './src/TwitterLike';
+import SwipeToDelete from './src/swipeToDelete';
+import WhatsappHeader from './src/whatsAppSearch';
+import Youtube from './src/youtube';
+import ProductPage from './src/addToCart/productPage';
+import {NavigationContainer} from '@react-navigation/native';
+// import {
+//   createNativeStackNavigator,
+//   TransitionPresets,
+// } from '@react-navigation/native-stack';
 
-global.__reanimatedWorkletInit = () => {};
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 
-const AnimationComponents = [
-  'Slider',
-  'Whatsapp Header',
-  'Swipe To Delete',
-  'Bkash Payment',
-  'Product Page',
-  'Delete Chat',
-  'Google Calendar',
-  'Pull to Refresh',
-];
+import HomeScreen from './src/HomeScreen';
+
+const IS_IOS = Platform.OS === 'ios';
+const screenOptions = IS_IOS
+  ? {}
+  : {
+      ...TransitionPresets.SlideFromRightIOS,
+    };
+
+const Stack = createStackNavigator();
 
 const App = () => {
-  const [selectedTopic, setSelectedTopic] = React.useState(null);
-
-  if (selectedTopic) {
-    switch (selectedTopic) {
-      case 'Slider':
-        return <Slider closeComponent={() => setSelectedTopic(null)} />;
-      case 'Whatsapp Header':
-        return <WhatsappHeader closeComponent={() => setSelectedTopic(null)} />;
-      case 'Swipe To Delete':
-        return <SwipeToDelete closeComponent={() => setSelectedTopic(null)} />;
-      case 'Bkash Payment':
-        return <BkashPayment closeComponent={() => setSelectedTopic(null)} />;
-      case 'Product Page':
-        return <ProductPage closeComponent={() => setSelectedTopic(null)} />;
-      case 'Delete Chat':
-        return <DeleteChat closeComponent={() => setSelectedTopic(null)} />;
-      case 'Google Calendar':
-        return <GoogleCalendar closeComponent={() => setSelectedTopic(null)} />;
-      case 'Youtube':
-        return <Youtube closeComponent={() => setSelectedTopic(null)} />;
-      case 'Pull to Refresh':
-        return <PullToRefresh closeComponent={() => setSelectedTopic(null)} />;
-      case 'Twitter Like Button':
-        return (
-          <TwitterLikeAnimation closeComponent={() => setSelectedTopic(null)} />
-        );
-      default:
-        return <Slider closeComponent={() => setSelectedTopic(null)} />;
-    }
-  }
-
   return (
-    <SafeAreaView style={{flex: 1}}>
-      {/* {AnimationComponents.map((item, index) => {
-        return (
-          <Pressable
-            key={index.toString()}
-            onPress={() => setSelectedTopic(item)}
-            style={styles.menuItem}>
-            <Text style={styles.menuItemIcon}>👉</Text>
-            <Text style={styles.menuItemName}>{`${index + 1}. ${item}`}</Text>
-          </Pressable>
-        );
-      })} */}
-      <TwitterLikeAnimation />
-    </SafeAreaView>
+    <>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={screenOptions}>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Slider" component={Slider} />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Whatsapp Header"
+            component={WhatsappHeader}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Swipe To Delete"
+            component={SwipeToDelete}
+          />
+          <Stack.Screen name="Bkash Payment" component={BkashPayment} />
+          <Stack.Screen name="Product Page" component={ProductPage} />
+          <Stack.Screen name="Delete Chat" component={DeleteChat} />
+          <Stack.Screen name="Google Calendar" component={GoogleCalendar} />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Pull to Refresh"
+            component={PullToRefresh}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Youtube Player"
+            component={Youtube}
+          />
+          <Stack.Screen name="Twitter Like" component={TwitterLikeAnimation} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
-
-export default App;
 
 const styles = StyleSheet.create({
   menuItem: {
@@ -106,3 +96,5 @@ const styles = StyleSheet.create({
     color: '#000',
   },
 });
+
+export default App;

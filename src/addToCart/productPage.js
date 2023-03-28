@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 const isAndroid = Platform.OS === 'android';
 
-export default function ProductPage({closeComponent}) {
+export default function ProductPage() {
   return (
     <>
       {isAndroid ? (
@@ -25,9 +25,6 @@ export default function ProductPage({closeComponent}) {
           <StatusBar barStyle="light-content" backgroundColor="#425F57" />
         </>
       )}
-      <Pressable onPress={() => closeComponent()} style={styles.backBtn}>
-        <Icon name="arrowleft" size={20} color="black" />
-      </Pressable>
       <View style={styles.mainContent}>
         <View style={styles.imageContainer}>
           <Image

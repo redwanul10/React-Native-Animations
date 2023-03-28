@@ -51,12 +51,16 @@ export default function Youtube() {
   const [selectedVideo, setSelectedVideo] = useState(null);
   return (
     <>
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
         <Header />
         <Tabs />
         <ScrollView>
-          {list.map(item => (
-            <VideoCard data={item} setSelectedVideo={setSelectedVideo} />
+          {list.map((item, index) => (
+            <VideoCard
+              key={index}
+              data={item}
+              setSelectedVideo={setSelectedVideo}
+            />
           ))}
         </ScrollView>
         {selectedVideo && (

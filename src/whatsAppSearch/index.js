@@ -19,7 +19,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-export default function WhatsappHeader({closeComponent}) {
+export default function WhatsappHeader({navigation}) {
   const [toggleSearch, setToggleSearch] = useState(false);
   const [showSearchHeader, setShowSearchHeader] = useState(false);
 
@@ -115,7 +115,7 @@ export default function WhatsappHeader({closeComponent}) {
         </View>
       </View>
       <Pressable
-        onPress={() => closeComponent()}
+        onPress={() => navigation.goBack()}
         style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text>Go Back to Animation List</Text>
       </Pressable>
