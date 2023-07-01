@@ -1,5 +1,5 @@
 import {View, useWindowDimensions} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
@@ -12,7 +12,8 @@ import {PanGestureHandler} from 'react-native-gesture-handler';
 const Swipable = props => {
   const screenWidth = useWindowDimensions().width;
   const translateX = useSharedValue(0);
-  const scaleX = useSharedValue(70);
+  const scaleX = useSharedValue(0);
+  const [loaded, setLoaded] = useState(false);
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
@@ -48,14 +49,23 @@ const Swipable = props => {
     };
   });
 
+  const animatedHeight = !loaded ? {height: 'auto'} : height;
   const backgroundColor = props.backgroundColor || '#EC255A';
+
   return (
     <>
       <PanGestureHandler
         failOffsetY={[-5, 5]}
         activeOffsetX={[-5, 5]}
         onGestureEvent={gestureHandler}>
-        <Animated.View style={[height, {backgroundColor}]}>
+        <Animated.View
+          style={[animatedHeight, {backgroundColor}]}
+          onLayout={e => {
+            if (!loaded) {
+              scaleX.value = e.nativeEvent.layout.height; //70; //e.nativeEvent.layout.height;
+              setLoaded(true);
+            }
+          }}>
           <Animated.View style={[animatedStyle]}>
             {props.children}
           </Animated.View>
