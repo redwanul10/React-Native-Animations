@@ -19,6 +19,7 @@ const AnimationComponents = [
   'Pull to Refresh',
   'Youtube Player',
   'Twitter Like',
+  'Ecommerce Shared Element Transision',
 ];
 
 const HomeScreen = ({navigation}) => {

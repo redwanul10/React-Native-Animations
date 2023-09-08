@@ -28,6 +28,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 
 import HomeScreen from './src/HomeScreen';
+import SharedElementExample from './src/sharedElementTransitions/addToCart';
 
 const IS_IOS = Platform.OS === 'ios';
 const screenOptions = IS_IOS
@@ -42,7 +43,7 @@ const App = () => {
   return (
     <>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={screenOptions}>
+        <Stack.Navigator screenOptions={screenOptions} initialRouteName="Home">
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Slider" component={Slider} />
           <Stack.Screen
@@ -56,6 +57,11 @@ const App = () => {
             component={SwipeToDelete}
           />
           <Stack.Screen name="Bkash Payment" component={BkashPayment} />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Ecommerce Shared Element Transision"
+            component={SharedElementExample}
+          />
           <Stack.Screen name="Product Page" component={ProductPage} />
           <Stack.Screen name="Delete Chat" component={DeleteChat} />
           <Stack.Screen name="Google Calendar" component={GoogleCalendar} />
