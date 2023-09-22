@@ -17,6 +17,7 @@
     "lottie-react-native": "^5.1.5",
     "react": "18.2.0",
     "react-native": "0.71.4",
+    "react-native-anchor-point": "^1.0.6",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-material-ripple": "^0.9.1",

@@ -19,6 +19,7 @@ const AnimationComponents = [
   'Pull to Refresh',
   'Youtube Player',
   'Twitter Like',
+  'Swipe Slider',
   'Ecommerce Shared Element Transision',
 ];
 

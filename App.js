@@ -29,6 +29,7 @@ import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 
 import HomeScreen from './src/HomeScreen';
 import SharedElementExample from './src/sharedElementTransitions/addToCart';
+import SwipeSlider from './src/SwipeSlider';
 
 const IS_IOS = Platform.OS === 'ios';
 const screenOptions = IS_IOS
@@ -43,9 +44,17 @@ const App = () => {
   return (
     <>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={screenOptions} initialRouteName="Home">
+        <Stack.Navigator
+          screenOptions={screenOptions}
+          // initialRouteName="Pizza Slider"
+        >
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Slider" component={Slider} />
+          <Stack.Screen
+            name="Swipe Slider"
+            component={SwipeSlider}
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             options={{headerShown: false}}
             name="Whatsapp Header"
