@@ -23,7 +23,7 @@ Here are step by step instructions to install the project
 3. Install the project dependencies:  
 ```npm install (node, yarn, etc)```
 
-4. Start the development server:
+4. Start the development server:  
 ```npm start```
 
 5. Run the app on an emulator or physical device:  
