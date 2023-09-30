@@ -6,10 +6,10 @@ This repository provides a set of pre-built animations and utilities to enhance 
 # Getting Started
 # Prerequisites
 Install any outside libraries you need
-Node.js
-npm or Yarn
-React Native CLI
-Any third-party libraries or dependencies based on your specific needs
+1. Node.js
+2. npm or Yarn
+3. React Native CLI
+4. Any third-party libraries or dependencies based on your specific needs
 
 # Installation
 Here are step by step instructions to install the project
