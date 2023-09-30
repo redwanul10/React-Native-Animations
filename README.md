@@ -6,35 +6,34 @@ This repository provides a set of pre-built animations and utilities to enhance 
 # Getting Started
 # Prerequisites
 Install any outside libraries you need
-1. Node.js
-2. npm or Yarn
-3. React Native CLI
-4. Any third-party libraries or dependencies based on your specific needs
+- Node.js
+- npm or Yarn
+- React Native CLI
+- Any third-party libraries or dependencies based on your specific needs
 
 # Installation
 Here are step by step instructions to install the project
 
-- Clone the repository
-git clone https://github.com/redwanul10/React-Native-Animations.git
+1. Clone the repository
+```git clone https://github.com/redwanul10/React-Native-Animations.git```
 
-- Change into your project directory
-cd React-Native-Animations
+2. Change into your project directory
+```cd React-Native-Animations```
 
-- Install the project dependencies:
-npm install (node, yarn, etc)
+3. Install the project dependencies:
+```npm install (node, yarn, etc)```
 
-- Start the development server:
-npm start
-            git checkout -b develop
+4. Start the development server:
+```npm start```
 
-- Run the app on an emulator or physical device:
-npx react-native run-android # Using Android
-npx react-native run-ios     # Using IOS
+5. Run the app on an emulator or physical device:
+```npx react-native run-android # Using Android```
+```npx react-native run-ios     # Using IOS```
 
 # Usage
-Provide instructions here on how to specifically use the application.
-Provide some example code
-Provide some screenshots of sample outputs.
+- Provide instructions here on how to specifically use the application.
+- Provide some example code
+- Provide some screenshots of sample outputs.
 
 # Animations
 React Native Animations is a collection of animations built using React Native
