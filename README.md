@@ -25,6 +25,7 @@ npm install (node, yarn, etc)
 
 - Start the development server:
 npm start
+            git checkout -b develop
 
 - Run the app on an emulator or physical device:
 npx react-native run-android # Using Android
