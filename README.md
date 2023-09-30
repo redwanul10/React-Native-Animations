@@ -14,19 +14,19 @@ Install any outside libraries you need
 # Installation
 Here are step by step instructions to install the project
 
-1. Clone the repository
+1. Clone the repository  
 ```git clone https://github.com/redwanul10/React-Native-Animations.git```
 
-2. Change into your project directory
+3. Change into your project directory
 ```cd React-Native-Animations```
 
-3. Install the project dependencies:
+4. Install the project dependencies:
 ```npm install (node, yarn, etc)```
 
-4. Start the development server:
+5. Start the development server:
 ```npm start```
 
-5. Run the app on an emulator or physical device:
+6. Run the app on an emulator or physical device:
 ```npx react-native run-android # Using Android```
 ```npx react-native run-ios     # Using IOS```
 
